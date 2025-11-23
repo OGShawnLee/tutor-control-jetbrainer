@@ -90,6 +90,16 @@ public abstract class Controller {
   }
 
   /**
+   * Handles the action of closing the current window with a confirmation alert.
+   */
+  public void onClickClose() {
+    boolean shallExit = AlertFacade.showConfirmationAndWait(
+      "¿Está seguro de que desea abandonar la operación? Se perdera su progreso."
+    );
+    if (shallExit) close();
+  }
+
+  /**
    * Closes the current window.
    */
   protected void close() {

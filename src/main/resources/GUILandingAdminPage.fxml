@@ -7,28 +7,31 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="daima.gui.controller.LandingAdminController">
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="daima.gui.controller.LandingAdminController">
   <children>
     <!-- User Info and Logout -->
     <VBox layoutY="670.0" spacing="16.0">
       <children>
         <Label fx:id="labelEmail" styleClass="title" text="\@Correo Electrónico">
           <VBox.margin>
-            <Insets />
+            <Insets/>
           </VBox.margin>
           <padding>
-            <Insets bottom="8.0" />
+            <Insets bottom="8.0"/>
           </padding>
         </Label>
         <HBox maxWidth="1.7976931348623157E308" spacing="16.0">
           <children>
-            <Button mnemonicParsing="false" onAction="#onClickLogOut" prefWidth="140.0" styleClass="button" text="Cerrar Sesión" />
-            <Button mnemonicParsing="false" onAction="#onClickManageProfile" prefWidth="140.0" text="Gestionar Cuenta" />
+            <Button mnemonicParsing="false" onAction="#onClickLogOut" prefWidth="140.0" styleClass="button"
+                    text="Cerrar Sesión"/>
+            <Button mnemonicParsing="false" onAction="#onClickManageProfile" prefWidth="140.0" text="Gestionar Cuenta"/>
           </children>
         </HBox>
       </children>
       <padding>
-        <Insets bottom="64.0" left="64.0" />
+        <Insets bottom="64.0" left="64.0"/>
       </padding>
     </VBox>
     <!-- Main Actions -->
@@ -36,29 +39,35 @@
       <children>
         <!-- Staff List -->
         <HBox maxWidth="-Infinity" spacing="16.0">
-          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewStaffList" prefWidth="202.0" styleClass="button" text="Personal" />
-          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStaff" prefWidth="202.0" styleClass="button" stylesheets="@main.css" text="Registrar Miembro de Personal" />
+          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewStaffList"
+                  prefWidth="202.0" styleClass="button" text="Personal"/>
+          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterStaff"
+                  prefWidth="202.0" styleClass="button" stylesheets="@main.css" text="Registrar Miembro de Personal"/>
         </HBox>
         <!-- Tutored List -->
         <HBox maxWidth="-Infinity" spacing="16.0">
-          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewTutoredList" prefWidth="202.0" styleClass="button" text="Tutorados" />
-          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterTutored" prefWidth="202.0" styleClass="button" text="Registrar Tutorado" />
+          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewTutoredList"
+                  prefWidth="202.0" styleClass="button" text="Tutorados"/>
+          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterTutored"
+                  prefWidth="202.0" styleClass="button" text="Registrar Tutorado"/>
         </HBox>
         <!-- Program List -->
         <HBox maxWidth="-Infinity" spacing="16.0">
           <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewProgramList" prefWidth="202.0" styleClass="button" text="Programas" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterProgram" prefWidth="202.0" styleClass="button" text="Registrar Programa" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickReviewProgramList"
+                    prefWidth="202.0" styleClass="button" text="Programas Educativos"/>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickRegisterProgram"
+                    prefWidth="202.0" styleClass="button" text="Registrar Programa Educativo"/>
           </children>
         </HBox>
       </children>
     </VBox>
     <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
       <children>
-        <Label styleClass="page-title" text="Inicio" />
+        <Label styleClass="page-title" text="Inicio"/>
       </children>
       <padding>
-        <Insets left="64.0" right="64.0" />
+        <Insets left="64.0" right="64.0"/>
       </padding>
     </HBox>
   </children>

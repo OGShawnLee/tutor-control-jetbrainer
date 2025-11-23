@@ -33,7 +33,13 @@ public class LogInController extends Controller {
 
   public void onClickLogIn() {
     AuthClient.getInstance().setCurrentStaff(
-      new StaffDTO(fieldEmail.getText(), StaffRole.ADMINISTRATOR)
+      new StaffDTO(
+        "Daima",
+        "Admin",
+        "Admin@email.com",
+        "001",
+        StaffRole.ADMINISTRATOR
+      )
     );
     navigateToLandingPage();
   }

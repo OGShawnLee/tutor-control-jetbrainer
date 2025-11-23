@@ -14,7 +14,7 @@ public abstract class LandingController extends Controller {
   }
 
   public void onClickManageProfile() {
-    // TODO: Add Update Profile
+    UpdateProfileController.displayUpdateStaffModal(this::initialize);
   }
 
   public void onClickLogOut() {
