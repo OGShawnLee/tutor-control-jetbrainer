@@ -44,3 +44,4 @@ bin/
 
 ### Project ###
 logs/
+src/main/resources/db.properties
