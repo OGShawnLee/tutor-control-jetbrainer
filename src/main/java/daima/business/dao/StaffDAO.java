@@ -19,4 +19,11 @@ public class StaffDAO {
       new StaffDTO("Jackie", "Lee", "Jackie@lee.com", "002", StaffRole.COORDINATOR)
     ));
   }
+
+  public ArrayList<StaffDTO> getAllByProgramAndRole(int idProgram, StaffRole role) {
+    return new ArrayList<>(Arrays.asList(
+      new StaffDTO("Damian", "Lee", "Damian@lee.com", "001", role),
+      new StaffDTO("Jackie", "Lee", "Jackie@lee.com", "002", role)
+    ));
+  }
 }

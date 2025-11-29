@@ -6,10 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +46,7 @@ public abstract class Controller {
         navigateFromThisPageTo("Landing Page", "GUILandingAdminPage");
         break;
       case COORDINATOR:
-        navigateFromThisPageTo("Landing Page", "GUILandingCashierPage");
+        navigateFromThisPageTo("Landing Page", "GUILandingCoordinatorPage");
         break;
       case SUPERVISOR:
         navigateFromThisPageTo("Landing Page", "GUILandingSupervisorPage");
@@ -104,5 +106,9 @@ public abstract class Controller {
    */
   protected void close() {
     Platform.runLater(() -> getScene().close());
+  }
+
+  public static <T> Optional<T> getSelectedItemFromTable(TableView<T> table) {
+    return Optional.ofNullable(table.getSelectionModel().getSelectedItem());
   }
 }

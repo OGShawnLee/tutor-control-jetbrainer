@@ -12,30 +12,34 @@
 
 <AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="daima.gui.controller.ReviewProgramListController">
+            fx:controller="daima.gui.controller.ReviewTutoredListAdminController">
   <children>
     <VBox layoutX="172.0" prefHeight="800.0" prefWidth="950.0" spacing="16.0">
       <children>
         <HBox alignment="CENTER_LEFT" spacing="16.0">
           <children>
-            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Buscar Programas Educativos" styleClass="input"/>
+            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Buscar Tutorados" styleClass="input"/>
           </children>
         </HBox>
         <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
           <HBox alignment="CENTER" spacing="16.0">
             <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
                     text="Volver a Inicio"/>
-            <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterProgram" styleClass="button"
-                    text="Registrar Programa Educativo"/>
-            <Button mnemonicParsing="false" onMouseClicked="#onClickManageProgram" styleClass="button"
-                    text="Editar Programa Educativo"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterTutored" styleClass="button"
+                    text="Registrar Tutorado"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickManageTutored" styleClass="button"
+                    text="Editar Tutorado"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickDeleteTutored" styleClass="button"
+                    text="Eliminar Tutorado"/>
           </HBox>
         </HBox>
-        <TableView fx:id="tableProgram" prefWidth="950.0" VBox.vgrow="ALWAYS">
+        <TableView fx:id="tableTutored" prefWidth="950.0" VBox.vgrow="ALWAYS">
           <columns>
-            <TableColumn fx:id="columnProgramID" prefWidth="50.0" styleClass="column" text="ID"/>
-            <TableColumn fx:id="columnAcronym" prefWidth="140.0" text="Acrónimo"/>
-            <TableColumn fx:id="columnName" prefWidth="240.0" styleClass="column" text="Nombre"/>
+            <TableColumn fx:id="columnEnrollment" prefWidth="110.0" styleClass="column" text="Matrícula"/>
+            <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Correo Electrónico"/>
+            <TableColumn fx:id="columnFullName" prefWidth="180.0" styleClass="column" text="Nombre Completo"/>
+            <TableColumn fx:id="columnProgramName" prefWidth="180.0" styleClass="column" text="Programa Educativo"/>
+            <TableColumn fx:id="columnTutorName" prefWidth="150.0" styleClass="column" text="Tutor"/>
             <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="170.0" styleClass="column"
                          text="Fecha de Registro"/>
           </columns>
@@ -47,7 +51,7 @@
     </VBox>
     <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
       <children>
-        <Label styleClass="page-title" text="Administración de Programas"/>
+        <Label styleClass="page-title" text="Administración de Tutorados"/>
       </children>
       <padding>
         <Insets left="64.0" right="64.0"/>

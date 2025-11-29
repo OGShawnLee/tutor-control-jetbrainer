@@ -19,4 +19,9 @@ public class StaffDTO extends Person {
   public StaffRole getRole() {
     return role;
   }
+
+  @Override
+  public String toString() {
+    return String.format("%s (%s)", getFullName(), getEmail());
+  }
 }

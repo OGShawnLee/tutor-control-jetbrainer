@@ -22,13 +22,30 @@ public class LogInController extends Controller {
     cleanErrorLabels();
   }
 
-  public void cleanErrorLabels() {
+  private void cleanErrorLabels() {
     labelTagEmail.setText("");
     labelTagPassword.setText("");
   }
 
-  public boolean isInvalidData() {
+  private boolean isInvalidData() {
     return true;
+  }
+
+  // TODO: Remove this method when authentication is implemented
+  private StaffRole getRoleFromPassword() {
+    if (fieldPassword.getText().contains("ADMIN")) {
+      return StaffRole.ADMINISTRATOR;
+    }
+
+    if (fieldPassword.getText().contains("COORD")) {
+      return StaffRole.COORDINATOR;
+    }
+
+    if (fieldPassword.getText().contains("SUPER")) {
+      return StaffRole.SUPERVISOR;
+    }
+
+    return StaffRole.TUTOR;
   }
 
   public void onClickLogIn() {
@@ -38,7 +55,7 @@ public class LogInController extends Controller {
         "Admin",
         "Admin@email.com",
         "001",
-        StaffRole.ADMINISTRATOR
+        getRoleFromPassword()
       )
     );
     navigateToLandingPage();

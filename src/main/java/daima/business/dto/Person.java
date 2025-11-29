@@ -10,7 +10,7 @@ public abstract class Person implements Record {
   private LocalDateTime createdAt;
 
   public Person(String name, String lastName, String email) {
-    this.id = 0;
+    this.id = 1;
     this.name = name;
     this.lastName = lastName;
     this.email = email;
@@ -27,6 +27,10 @@ public abstract class Person implements Record {
 
   public String getLastName() {
     return lastName;
+  }
+
+  public String getFullName() {
+    return name + " " + lastName;
   }
 
   public String getEmail() {

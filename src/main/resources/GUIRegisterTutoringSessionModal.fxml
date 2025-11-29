@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="daima.gui.controller.RegisterTutoringSessionController">
+  <children>
+    <VBox prefHeight="800.0" prefWidth="800.0" style="-fx-alignment: center;">
+      <children>
+        <VBox maxWidth="360.0" prefWidth="360.0" spacing="32.0">
+          <children>
+            <Label fx:id="title" styleClass="title" text="Agendar Horario de Tutoría"/>
+            <VBox prefWidth="340.0" spacing="16.0">
+              <children>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Sesión de Tutoría"/>
+                    <TextField fx:id="fieldKind" promptText="Sesión de Tutoría" styleClass="input"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Tutorado"/>
+                    <ComboBox fx:id="fieldTutored" maxWidth="1.7976931348623157E308" promptText="Tutorado"
+                              styleClass="input"/>
+                    <Label fx:id="labelTagTutored" text="Label" textFill="RED"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Fecha de Tutoría"/>
+                    <TextField fx:id="fieldAppointmentDate" maxWidth="1.7976931348623157E308"
+                               promptText="Fecha de Tutoría" styleClass="input"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Hora de Tutoría"/>
+                    <TextField fx:id="fieldHour" maxWidth="1.7976931348623157E308"
+                               promptText="Introduzca la Hora de Tutoría (7:00 - 19:00)" styleClass="input"/>
+                    <Label fx:id="labelTagHour" text="Label" textFill="RED"/>
+                  </children>
+                </VBox>
+                <HBox maxWidth="1.7976931348623157E308" spacing="16.0">
+                  <children>
+                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickClose"
+                            prefWidth="172.0" styleClass="button" text="Cerrar"/>
+                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                            onAction="#onClickRegisterTutoringSession" prefWidth="172.0" text="Confirmar"/>
+                  </children>
+                </HBox>
+              </children>
+            </VBox>
+          </children>
+        </VBox>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

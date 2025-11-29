@@ -3,59 +3,60 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="daima.gui.controller.ReviewStaffListController">
-  <content>
-    <AnchorPane fx:id="container" minHeight="-Infinity" prefHeight="800.0" prefWidth="1280.0">
-      <VBox layoutX="172.0" prefHeight="800.0" prefWidth="950.0" spacing="16.0">
-        <children>
-          <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
-            <HBox alignment="CENTER" spacing="16.0">
-              <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
-                      text="Volver a Inicio"/>
-              <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterStaff" styleClass="button"
-                      text="Registrar Miembro de Personal"/>
-              <Button mnemonicParsing="false" onMouseClicked="#onClickManageStaff" styleClass="button"
-                      text="Editar Miembro de Personal"/>
-              <Button mnemonicParsing="false" onMouseClicked="#onClickDeleteStaff" styleClass="button"
-                      text="Eliminar Miembro de Personal"/>
-            </HBox>
-            <padding>
-              <Insets top="48.0"/>
-            </padding>
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="1280.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="daima.gui.controller.ReviewStaffListController">
+  <children>
+    <VBox layoutX="172.0" prefHeight="800.0" prefWidth="950.0" spacing="16.0">
+      <children>
+        <HBox alignment="CENTER_LEFT" spacing="16.0">
+          <children>
+            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Buscar Miembros de Personal"
+                       styleClass="input"/>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
+          <HBox alignment="CENTER" spacing="16.0">
+            <Button mnemonicParsing="false" onMouseClicked="#navigateToLandingPage" styleClass="button"
+                    text="Volver a Inicio"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterStaff" styleClass="button"
+                    text="Registrar Miembro de Personal"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickManageStaff" styleClass="button"
+                    text="Editar Miembro de Personal"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickDeleteStaff" styleClass="button"
+                    text="Eliminar Miembro de Personal"/>
           </HBox>
-          <TableView fx:id="tableStaff" prefHeight="618.0" prefWidth="950.0">
-            <columns>
-              <TableColumn fx:id="columnStaffID" prefWidth="50.0" styleClass="column" text="ID"/>
-              <TableColumn fx:id="columnName" prefWidth="120.0" styleClass="column" text="Nombre"/>
-              <TableColumn fx:id="columnLastName" prefWidth="140.0" text="Apellidos"/>
-              <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Correo Electrónico"/>
-              <TableColumn fx:id="columnRole" prefWidth="120.0" styleClass="column" text="Rol"/>
-              <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="180.0" styleClass="column"
-                           text="Fecha de Registro"/>
-            </columns>
-          </TableView>
-        </children>
-        <padding>
-          <Insets bottom="32.0" top="32.0"/>
-        </padding>
-      </VBox>
-      <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
-        <children>
-          <Label styleClass="page-title" text="Administración de Miembros de Personal"/>
-        </children>
-        <padding>
-          <Insets left="64.0" right="64.0"/>
-        </padding>
-      </HBox>
-    </AnchorPane>
-  </content>
-</ScrollPane>
+        </HBox>
+        <TableView fx:id="tableStaff" prefWidth="950.0" VBox.vgrow="ALWAYS">
+          <columns>
+            <TableColumn fx:id="columnStaffID" prefWidth="50.0" styleClass="column" text="ID"/>
+            <TableColumn fx:id="columnName" prefWidth="120.0" styleClass="column" text="Nombre"/>
+            <TableColumn fx:id="columnLastName" prefWidth="140.0" text="Apellidos"/>
+            <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Correo Electrónico"/>
+            <TableColumn fx:id="columnRole" prefWidth="120.0" styleClass="column" text="Rol"/>
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="170.0" styleClass="column"
+                         text="Fecha de Registro"/>
+          </columns>
+        </TableView>
+      </children>
+      <padding>
+        <Insets bottom="32.0" top="96.0"/>
+      </padding>
+    </VBox>
+    <HBox prefHeight="64.0" prefWidth="1280.0" style="-fx-background-color: black; -fx-alignment: center-left;">
+      <children>
+        <Label styleClass="page-title" text="Administración de Miembros de Personal"/>
+      </children>
+      <padding>
+        <Insets left="64.0" right="64.0"/>
+      </padding>
+    </HBox>
+  </children>
+</AnchorPane>

@@ -10,7 +10,7 @@ public class LandingAdminController extends LandingController {
   }
 
   public void onClickReviewTutoredList() {
-    ReviewTutoredListController.navigateToTutoredListPage(getScene());
+    ReviewTutoredListAdminController.navigateToTutoredListPage(getScene());
   }
 
   public void onClickRegisterTutored() {

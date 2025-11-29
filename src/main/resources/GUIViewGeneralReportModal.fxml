@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="daima.gui.controller.ViewGeneralReportController">
+  <children>
+    <VBox prefHeight="800.0" prefWidth="800.0" style="-fx-alignment: center;">
+      <children>
+        <VBox maxWidth="360.0" prefWidth="360.0" spacing="32.0">
+          <children>
+            <Label fx:id="title" styleClass="title" text="Ver Reporte General"/>
+            <VBox prefWidth="340.0" spacing="16.0">
+              <children>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Periodo Escolar"/>
+                    <TextField fx:id="fieldPeriod" promptText="Periodo Escolar"
+                               styleClass="input" editable="false"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Sesión de Tutoría"/>
+                    <TextField fx:id="fieldTutoringSessionKind" promptText="Sesión de Tutoría"
+                               styleClass="input" editable="false"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Fecha de Registro"/>
+                    <TextField fx:id="fieldFormattedCreatedAt" promptText="Fecha de Registro"
+                               styleClass="input" editable="false"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Coordinador"/>
+                    <TextField fx:id="fieldNameCoordinator" promptText="Coordinador"
+                               styleClass="input" editable="false"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Estado"/>
+                    <TextField fx:id="fieldState" promptText="Estado"
+                               styleClass="input" editable="false"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
+                    <Label styleClass="label" text="Reporte"/>
+                    <TextArea fx:id="fieldContent" promptText="Introduzca su Reporte"
+                              styleClass="input" editable="false"/>
+                  </children>
+                </VBox>
+                <HBox maxWidth="1.7976931348623157E308" spacing="16.0">
+                  <children>
+                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickClose"
+                            styleClass="button" text="Cerrar"/>
+                  </children>
+                </HBox>
+              </children>
+            </VBox>
+          </children>
+        </VBox>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>

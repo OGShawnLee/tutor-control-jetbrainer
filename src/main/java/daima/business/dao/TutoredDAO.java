@@ -19,4 +19,8 @@ public class TutoredDAO {
       new TutoredDTO("Light", "Lee", "Jackie@lee.com", "23014111", 0)
     ));
   }
+
+  public ArrayList<TutoredDTO> getAllByTutor(int idTutor) {
+    return getAll();
+  }
 }

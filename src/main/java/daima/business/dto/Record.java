@@ -22,7 +22,7 @@ public interface Record {
    * @return Formatted creation date string.
    */
   default String getFormattedCreatedAt() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy 'a las' HH:mm", Locale.forLanguageTag("es-ES"));
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd '/' MMMM '/' yyyy, HH:mm", Locale.forLanguageTag("es-ES"));
     return getCreatedAt().format(formatter);
   }
 }

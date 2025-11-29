@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -29,6 +30,8 @@ public class ReviewStaffListController extends Controller {
   private TableColumn<StaffDTO, StaffRole> columnRole;
   @FXML
   private TableColumn<StaffDTO, String> columnFormattedCreatedAt;
+  @FXML
+  private TextField fieldSearch;
 
   public void initialize() {
     configureTableColumns();
