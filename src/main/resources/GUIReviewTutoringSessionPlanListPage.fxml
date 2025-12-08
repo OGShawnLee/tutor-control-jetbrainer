@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -28,6 +29,12 @@
             <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterTutoringSessionPlan" styleClass="button"
                     text="Registrar Planeación de Tutoría"/>
           </HBox>
+          <HBox alignment="CENTER_RIGHT" spacing="16.0" HBox.hgrow="ALWAYS">
+            <children>
+              <ComboBox fx:id="fieldPeriod" maxWidth="1.7976931348623157E308"
+                        promptText="Seleccione el Periodo de la Planeación" styleClass="input"/>
+            </children>
+          </HBox>
         </HBox>
         <TableView fx:id="tableTutoringSessionPlan" prefWidth="950.0" VBox.vgrow="ALWAYS">
           <columns>
@@ -35,8 +42,7 @@
             <TableColumn fx:id="columnKind" prefWidth="150.0" text="Sesión de Tutoría"/>
             <TableColumn fx:id="columnState" prefWidth="130.0" styleClass="column" text="Estado"/>
             <TableColumn fx:id="columnAppointmentDate" prefWidth="180.0" styleClass="column" text="Fecha Programada"/>
-            <TableColumn fx:id="columnCoordinatorName" prefWidth="180.0" styleClass="column" text="Coordinador"/>
-            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="170.0" styleClass="column"
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
                          text="Fecha de Registro"/>
           </columns>
         </TableView>
