@@ -21,14 +21,24 @@
               <children>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
+                    <Label styleClass="label" text="Programa Educativo"/>
+                    <ComboBox fx:id="fieldProgram" maxWidth="1.7976931348623157E308"
+                              promptText="Seleccione el Programa Educativo" styleClass="input"/>
+                    <Label fx:id="labelTagProgram" text="Label" textFill="RED"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
                     <Label styleClass="label" text="Sesión de Tutoría"/>
-                    <TextField fx:id="fieldKind" promptText="Sesión de Tutoría" styleClass="input"/>
+                    <TextField fx:id="fieldTutoringSessionKind" promptText="Sesión de Tutoría" styleClass="input"
+                               editable="false"/>
+                    <Label fx:id="labelTagKind" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Tutorado"/>
-                    <ComboBox fx:id="fieldTutored" maxWidth="1.7976931348623157E308" promptText="Tutorado"
+                    <ComboBox fx:id="fieldTutored" maxWidth="1.7976931348623157E308" promptText="Seleccione un Tutorado"
                               styleClass="input"/>
                     <Label fx:id="labelTagTutored" text="Label" textFill="RED"/>
                   </children>
@@ -37,7 +47,7 @@
                   <children>
                     <Label styleClass="label" text="Fecha de Tutoría"/>
                     <TextField fx:id="fieldAppointmentDate" maxWidth="1.7976931348623157E308"
-                               promptText="Fecha de Tutoría" styleClass="input"/>
+                               promptText="Fecha de Tutoría" styleClass="input" editable="false"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
