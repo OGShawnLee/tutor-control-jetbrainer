@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,6 +21,14 @@
               <children>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
+                    <Label styleClass="label" text="Acrónimo"/>
+                    <TextField fx:id="fieldAcronym" promptText="Introduzca el Acrónimo del Programa Educativo"
+                               styleClass="input"/>
+                    <Label fx:id="labelTagAcronym" text="Label" textFill="RED"/>
+                  </children>
+                </VBox>
+                <VBox prefWidth="360.0" spacing="8.0">
+                  <children>
                     <Label styleClass="label" text="Nombre"/>
                     <TextField fx:id="fieldName" promptText="Introduzca el Nombre del Programa Educativo"
                                styleClass="input"/>
@@ -28,10 +37,9 @@
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
-                    <Label styleClass="label" text="Acrónimo"/>
-                    <TextField fx:id="fieldAcronym" promptText="Introduzca el Acrónimo del Programa Educativo"
-                               styleClass="input"/>
-                    <Label fx:id="labelTagAcronym" text="Label" textFill="RED"/>
+                    <Label styleClass="label" text="Coordinador (Opcional)"/>
+                    <ComboBox fx:id="fieldCoordinator" maxWidth="1.7976931348623157E308"
+                              promptText="Seleccione el Coordinador del Programa" styleClass="input"/>
                   </children>
                 </VBox>
                 <HBox maxWidth="1.7976931348623157E308" spacing="16.0">
