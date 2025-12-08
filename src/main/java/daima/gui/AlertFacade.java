@@ -5,6 +5,7 @@ import javafx.scene.control.ButtonType;
 
 import java.util.Optional;
 
+import daima.common.BusinessRuleException;
 import daima.common.UserDisplayableException;
 
 /**
@@ -25,7 +26,11 @@ public class AlertFacade {
   }
 
   public static void showErrorAndWait(UserDisplayableException e) {
-    showErrorAndWait(e.getMessage());
+    if (e instanceof BusinessRuleException) {
+      showWarningAndWait(e.getMessage());
+    } else {
+      showErrorAndWait(e.getMessage());
+    }
   }
 
   public static boolean showConfirmationAndWait(String message) {
