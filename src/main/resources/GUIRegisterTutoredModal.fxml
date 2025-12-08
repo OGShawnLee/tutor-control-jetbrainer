@@ -37,14 +37,6 @@
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
-                    <Label styleClass="label" text="Correo Electrónico"/>
-                    <TextField fx:id="fieldEmail" promptText="Introduzca el Correo Electrónico del Tutorado"
-                               styleClass="input"/>
-                    <Label fx:id="labelTagEmail" text="Label" textFill="RED"/>
-                  </children>
-                </VBox>
-                <VBox prefWidth="360.0" spacing="8.0">
-                  <children>
                     <Label styleClass="label" text="Matrícula"/>
                     <TextField fx:id="fieldEnrollment" promptText="Introduzca la Matrícula del Tutorado"
                                styleClass="input"/>
