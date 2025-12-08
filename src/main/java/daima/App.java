@@ -11,6 +11,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import daima.business.dao.StaffDAO;
 import daima.common.ExceptionHandler;
 import daima.gui.AlertFacade;
 
@@ -44,7 +45,10 @@ public class App extends Application {
 
   private void loadApplication(Stage stage) {
     try {
-      FXMLLoader loader = new FXMLLoader(App.class.getResource(LOG_IN_PAGE_FILE));
+      String initialPagePath
+        = StaffDAO.getInstance().isThereAnAdminAccount() ? LOG_IN_PAGE_FILE : SIGN_UP_PAGE_FILE;
+
+      FXMLLoader loader = new FXMLLoader(App.class.getResource(initialPagePath));
       Scene scene = new Scene(loader.load());
 
       stage.setTitle(APP_TITLE);
