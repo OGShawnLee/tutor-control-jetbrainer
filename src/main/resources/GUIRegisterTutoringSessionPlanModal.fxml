@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ComboBox?>
 <AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="daima.gui.controller.RegisterTutoringSessionPlanController">
@@ -22,7 +23,7 @@
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Sesión de Tutoría"/>
-                    <TextField fx:id="fieldKind" promptText="Sesión de Tutoría" styleClass="input"/>
+                    <TextField fx:id="fieldKind" promptText="Sesión de Tutoría" styleClass="input" editable="false"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
