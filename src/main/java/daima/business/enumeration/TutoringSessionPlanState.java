@@ -2,14 +2,14 @@ package daima.business.enumeration;
 
 public enum TutoringSessionPlanState {
   SCHEDULED,
-  CONCLUDED;
+  COMPLETED;
 
   @Override
   public String toString() {
     switch (this) {
       case SCHEDULED:
         return "Programada";
-      case CONCLUDED:
+      case COMPLETED:
         return "Concluida";
       default:
         return super.toString();
