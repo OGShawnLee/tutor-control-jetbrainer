@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -49,29 +48,29 @@
                     <Label styleClass="label" text="Número de Personal"/>
                     <TextField fx:id="fieldIDWorker"
                                promptText="Número de Personal"
-                               styleClass="input" disable="true" editable="false"/>
+                               styleClass="input" editable="false"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
-                    <Label styleClass="label" text="Rol"/>
-                    <ComboBox fx:id="fieldStaffRole" maxWidth="1.7976931348623157E308"
-                              promptText="Rol del Miembro de Personal" styleClass="input"
-                              disable="true"
-                    />
+                    <Label styleClass="label" text="Rol/Roles"/>
+                    <TextField fx:id="fieldFormattedRoles" text="Rol/Roles de Miembro de Personal"
+                               styleClass="input" editable="false"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Contraseña (Opcional)"/>
-                    <PasswordField fx:id="fieldPassword" promptText="Actualice su Contraseña" styleClass="input"/>
+                    <PasswordField fx:id="fieldPassword" promptText="Actualice su Contraseña" styleClass="input"
+                                   disable="true"/>
                     <Label fx:id="labelTagPassword" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Confirmar Contraseña (Opcional)"/>
-                    <PasswordField fx:id="fieldConfirmPassword" promptText="Confirme su Contraseña" styleClass="input"/>
+                    <PasswordField fx:id="fieldConfirmPassword" promptText="Confirme su Contraseña" styleClass="input"
+                                   disable="true"/>
                     <Label fx:id="labelTagConfirmPassword" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
