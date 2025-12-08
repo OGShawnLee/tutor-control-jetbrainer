@@ -1,10 +1,10 @@
 package daima.gui.controller;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import daima.business.AuthClient;
@@ -15,23 +15,20 @@ import daima.gui.AlertFacade;
 
 import java.util.ArrayList;
 
-public class ReviewTutoredListCoordinatorController extends ReviewTutoredListController {
+public class ReviewTutoredListTutorController extends ReviewTutoredListController {
   @FXML
-  protected TableColumn<TutoredDTO, String> columnTutorName;
+  protected TableColumn<TutoredDTO, String> columnRiskState;
 
   @Override
   protected void configureTableColumns() {
     super.configureTableColumns();
-    columnTutorName.setCellValueFactory(data -> {
-      String tutorName = data.getValue().getTutorName().orElse("Sin Tutor Asignado");
-      return new SimpleObjectProperty<>(tutorName);
-    });
+    columnRiskState.setCellValueFactory(new PropertyValueFactory<>("riskState"));
   }
 
   public void setTableItems() {
     try {
-      ArrayList<TutoredDTO> tutoredDTOList = TutoredDAO.getInstance().getAllByProgram(
-        AuthClient.getInstance().getCurrentStaff().getProgramCoordinated().getID()
+      ArrayList<TutoredDTO> tutoredDTOList = TutoredDAO.getInstance().getAllByTutor(
+        AuthClient.getInstance().getCurrentStaff().getID()
       );
 
       if (tutoredDTOList.isEmpty()) {
@@ -50,13 +47,13 @@ public class ReviewTutoredListCoordinatorController extends ReviewTutoredListCon
     }
   }
 
-  public void onClickAssignTutored() {
-    getSelectedItemFromTable(tableTutored).ifPresent(tutoredDTO -> {
-      AssignTutoredController.displayAssignTutoredModal(tutoredDTO, this::setTableItems);
+  public void onClickToggleState() {
+    getSelectedItemFromTable(tableTutored).ifPresent(it -> {
+      AlertFacade.showInformationAndWait("No es posible realizar esta acción ya que aún no ha sido implementada.");
     });
   }
 
   public static void navigateToTutoredListPage(Stage currentStage) {
-    navigateTo(currentStage, "Administración de Tutorados", "GUIReviewTutoredListCoordinatorPage");
+    navigateTo(currentStage, "Administración de Tutorados", "GUIReviewTutoredListTutorPage");
   }
 }

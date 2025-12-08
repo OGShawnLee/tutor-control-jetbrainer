@@ -9,7 +9,7 @@ public class LandingTutorController extends LandingController {
   }
 
   public void onClickReviewTutoredList() {
-
+    ReviewTutoredListTutorController.navigateToTutoredListPage(getScene());
   }
 
   public void onClickReviewIssueList() {

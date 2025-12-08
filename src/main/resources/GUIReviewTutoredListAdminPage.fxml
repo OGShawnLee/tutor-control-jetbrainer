@@ -35,12 +35,12 @@
         </HBox>
         <TableView fx:id="tableTutored" prefWidth="950.0" VBox.vgrow="ALWAYS">
           <columns>
-            <TableColumn fx:id="columnEnrollment" prefWidth="110.0" styleClass="column" text="Matrícula"/>
+            <TableColumn fx:id="columnFormattedEnrollment" prefWidth="110.0" styleClass="column" text="Matrícula"/>
             <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Correo Electrónico"/>
             <TableColumn fx:id="columnFullName" prefWidth="180.0" styleClass="column" text="Nombre Completo"/>
             <TableColumn fx:id="columnProgramName" prefWidth="180.0" styleClass="column" text="Programa Educativo"/>
             <TableColumn fx:id="columnTutorName" prefWidth="150.0" styleClass="column" text="Tutor"/>
-            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="170.0" styleClass="column"
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
                          text="Fecha de Registro"/>
           </columns>
         </TableView>
