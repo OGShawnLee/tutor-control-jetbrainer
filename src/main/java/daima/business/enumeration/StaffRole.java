@@ -1,7 +1,7 @@
 package daima.business.enumeration;
 
 public enum StaffRole {
-  ADMINISTRATOR,
+  ADMIN,
   COORDINATOR,
   TUTOR,
   SUPERVISOR;
@@ -9,7 +9,7 @@ public enum StaffRole {
   @Override
   public String toString() {
     switch (this) {
-      case ADMINISTRATOR:
+      case ADMIN:
         return "Administrador";
       case COORDINATOR:
         return "Coordinador";
