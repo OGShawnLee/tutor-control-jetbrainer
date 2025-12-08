@@ -28,7 +28,7 @@
                     text="Volver a Inicio"/>
             <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterStaff" styleClass="button"
                     text="Registrar Miembro de Personal"/>
-            <Button mnemonicParsing="false" onMouseClicked="#onClickManageStaff" styleClass="button"
+            <Button mnemonicParsing="false" onMouseClicked="#onClickManageStaff" styleClass="button" disable="true"
                     text="Editar Miembro de Personal"/>
             <Button mnemonicParsing="false" onMouseClicked="#onClickDeleteStaff" styleClass="button"
                     text="Eliminar Miembro de Personal"/>
@@ -40,8 +40,8 @@
             <TableColumn fx:id="columnName" prefWidth="120.0" styleClass="column" text="Nombre"/>
             <TableColumn fx:id="columnLastName" prefWidth="140.0" text="Apellidos"/>
             <TableColumn fx:id="columnEmail" prefWidth="160.0" styleClass="column" text="Correo Electrónico"/>
-            <TableColumn fx:id="columnRole" prefWidth="120.0" styleClass="column" text="Rol"/>
-            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="170.0" styleClass="column"
+            <TableColumn fx:id="columnFormattedRoles" prefWidth="120.0" styleClass="column" text="Roles"/>
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
                          text="Fecha de Registro"/>
           </columns>
         </TableView>

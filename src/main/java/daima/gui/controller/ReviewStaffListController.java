@@ -1,6 +1,7 @@
 package daima.gui.controller;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -11,9 +12,10 @@ import javafx.stage.Stage;
 import daima.business.dao.StaffDAO;
 import daima.business.dto.StaffDTO;
 import daima.business.enumeration.StaffRole;
+import daima.common.UserDisplayableException;
 import daima.gui.AlertFacade;
-import daima.gui.modal.ModalFacade;
-import daima.gui.modal.ModalFacadeConfiguration;
+
+import java.util.ArrayList;
 
 public class ReviewStaffListController extends Controller {
   @FXML
@@ -27,7 +29,7 @@ public class ReviewStaffListController extends Controller {
   @FXML
   private TableColumn<StaffDTO, String> columnEmail;
   @FXML
-  private TableColumn<StaffDTO, StaffRole> columnRole;
+  private TableColumn<StaffDTO, StaffRole> columnFormattedRoles;
   @FXML
   private TableColumn<StaffDTO, String> columnFormattedCreatedAt;
   @FXML
@@ -43,14 +45,34 @@ public class ReviewStaffListController extends Controller {
     columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
     columnLastName.setCellValueFactory(new PropertyValueFactory<>("LastName"));
     columnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-    columnRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+    columnFormattedRoles.setCellValueFactory(new PropertyValueFactory<>("roles"));
     columnFormattedCreatedAt.setCellValueFactory(new PropertyValueFactory<>("formattedCreatedAt"));
   }
 
+  public void configureSearch(
+    ObservableList<StaffDTO> staffDTOObservableList
+  ) {
+    useConfigureSearch(fieldSearch, staffDTOObservableList, tableStaff);
+  }
+
   public void setTableItems() {
-    tableStaff.setItems(
-      FXCollections.observableList(StaffDAO.getInstance().getAll())
-    );
+    try {
+      ArrayList<StaffDTO> staffDTOList = StaffDAO.getInstance().getAll();
+
+      if (staffDTOList.isEmpty()) {
+        AlertFacade.showErrorAndWait(
+          "No es posible mostrar elementos porque no hay ninguno registrado en el sistema aún."
+        );
+      }
+
+      ObservableList<StaffDTO> staffDTOObservableList = FXCollections.observableList(staffDTOList);
+      tableStaff.setItems(staffDTOObservableList);
+      configureSearch(staffDTOObservableList);
+    } catch (UserDisplayableException e) {
+      AlertFacade.showErrorAndWait(
+        "No ha sido posible recuperar información debido a un error en la base de datos, intente de nuevo más tarde"
+      );
+    }
   }
 
   public void onClickRegisterStaff() {
@@ -58,37 +80,35 @@ public class ReviewStaffListController extends Controller {
   }
 
   public void onClickManageStaff() {
-    StaffDTO selectedStaff = tableStaff.getSelectionModel().getSelectedItem();
+    getSelectedItemFromTable(tableStaff).ifPresent(it -> {
+      AlertFacade.showInformationAndWait("No es posible realizar esta acción ya que aún no ha sido implementada.");
+      // RegisterStaffController.displayManageStaffModal(this::setTableItems, it)
+    });
+  }
 
-    if (selectedStaff == null) {
-      AlertFacade.showWarningAndWait(
-        "Para realizar esta operación debe seleccionar una fila de la tabla."
-      );
-    } else {
-      ModalFacade.createAndDisplayContextModal(
-        new ModalFacadeConfiguration(
-          "Modificar Miembro de Personal",
-          "GUIRegisterStaffModal",
-          this::setTableItems
-        ),
-        selectedStaff
-      );
+  public void deleteStaff(StaffDTO staffDTO) {
+    boolean shallDelete = AlertFacade.showConfirmationAndWait(
+      "¿Está seguro de que desea eliminar este miembro de personal permanentemente?"
+    );
+
+    if (shallDelete) {
+      try {
+        boolean failed = StaffDAO.getInstance().deleteOne(staffDTO);
+
+        if (failed) {
+          AlertFacade.showErrorAndWait("No ha sido posible eliminar el miembro de personal.");
+        } else {
+          AlertFacade.showSuccessAndWait("El miembro de personal ha sido eliminado exitosamente.");
+          setTableItems();
+        }
+      } catch (UserDisplayableException e) {
+        AlertFacade.showErrorAndWait(e);
+      }
     }
   }
 
   public void onClickDeleteStaff() {
-    StaffDTO selectedStaff = tableStaff.getSelectionModel().getSelectedItem();
-
-    if (selectedStaff == null) {
-      AlertFacade.showWarningAndWait(
-        "Para realizar esta operación debe seleccionar una fila de la tabla."
-      );
-    } else {
-      boolean shallDelete = AlertFacade.showConfirmationAndWait(
-        "¿Está seguro de que desea eliminar este miembro de personal permanentemente?"
-      );
-      // TODO: Handle Delete
-    }
+    getSelectedItemFromTable(tableStaff).ifPresent(this::deleteStaff);
   }
 
   public static void navigateToStaffListPage(Stage currentStage) {
