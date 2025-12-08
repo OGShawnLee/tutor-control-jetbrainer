@@ -18,7 +18,7 @@ public abstract class LandingController extends Controller {
   }
 
   public void onClickLogOut() {
-    AuthClient.getInstance().setCurrentStaff(null);
+    AuthClient.getInstance().handleLogOut();
     navigateFromThisPageTo("Página de Inicio", "GUILogInPage");
   }
 }

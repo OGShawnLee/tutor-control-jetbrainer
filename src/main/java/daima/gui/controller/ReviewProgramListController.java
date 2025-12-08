@@ -1,6 +1,8 @@
 package daima.gui.controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -10,19 +12,20 @@ import javafx.stage.Stage;
 
 import daima.business.dao.ProgramDAO;
 import daima.business.dto.ProgramDTO;
+import daima.common.UserDisplayableException;
 import daima.gui.AlertFacade;
-import daima.gui.modal.ModalFacade;
-import daima.gui.modal.ModalFacadeConfiguration;
+
+import java.util.ArrayList;
 
 public class ReviewProgramListController extends Controller {
   @FXML
   private TableView<ProgramDTO> tableProgram;
   @FXML
-  private TableColumn<ProgramDTO, String> columnProgramID;
+  private TableColumn<ProgramDTO, String> columnAcronym;
   @FXML
   private TableColumn<ProgramDTO, String> columnName;
   @FXML
-  private TableColumn<ProgramDTO, String> columnAcronym;
+  private TableColumn<ProgramDTO, String> columnNameCoordinator;
   @FXML
   private TableColumn<ProgramDTO, String> columnFormattedCreatedAt;
   @FXML
@@ -33,46 +36,46 @@ public class ReviewProgramListController extends Controller {
     setTableItems();
   }
 
+  public void configureSearch(ObservableList<ProgramDTO> programDTOObservableList) {
+    useConfigureSearch(fieldSearch, programDTOObservableList, tableProgram);
+  }
+
   public void configureTableColumns() {
-    columnProgramID.setCellValueFactory(new PropertyValueFactory<>("ID"));
-    columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
     columnAcronym.setCellValueFactory(new PropertyValueFactory<>("acronym"));
+    columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    columnNameCoordinator.setCellValueFactory(data -> {
+      String nameCoordinator = data.getValue().getNameCoordinator().orElse("Sin Coordinador Asignado");
+      return new SimpleObjectProperty<>(nameCoordinator);
+    });
     columnFormattedCreatedAt.setCellValueFactory(new PropertyValueFactory<>("formattedCreatedAt"));
   }
 
   public void setTableItems() {
-    tableProgram.setItems(
-      FXCollections.observableList(ProgramDAO.getInstance().getAll())
-    );
+    try {
+      ArrayList<ProgramDTO> programDTOList = ProgramDAO.getInstance().getAll();
+
+      if (programDTOList.isEmpty()) {
+        AlertFacade.showErrorAndWait("No es posible mostrar elementos porque no hay ninguno registrado en el sistema aún.");
+      }
+
+      ObservableList<ProgramDTO> programDTOObservableList = FXCollections.observableArrayList(programDTOList);
+      tableProgram.setItems(programDTOObservableList);
+      configureSearch(programDTOObservableList);
+    } catch (UserDisplayableException e) {
+      AlertFacade.showErrorAndWait(
+        "No ha sido posible recuperar información debido a un error en la base de datos, intente de nuevo más tarde."
+      );
+    }
   }
 
   public void onClickRegisterProgram() {
-    ModalFacade.createAndDisplay(
-      new ModalFacadeConfiguration(
-        "Register Program",
-        "GUIRegisterProgramModal",
-        this::setTableItems
-      )
-    );
+    RegisterProgramController.displayRegisterProgramModal(this::setTableItems);
   }
 
   public void onClickManageProgram() {
-    ProgramDTO selectedProgram = tableProgram.getSelectionModel().getSelectedItem();
-
-    if (selectedProgram == null) {
-      AlertFacade.showWarningAndWait(
-        "Para realizar esta operación debe seleccionar una fila de la tabla."
-      );
-    } else {
-      ModalFacade.createAndDisplayContextModal(
-        new ModalFacadeConfiguration(
-          "Modificar Programa Educativo",
-          "GUIRegisterProgramModal",
-          this::setTableItems
-        ),
-        selectedProgram
-      );
-    }
+    getSelectedItemFromTable(tableProgram).ifPresent(it ->
+      RegisterProgramController.displayManageProgramModal(this::setTableItems, it)
+    );
   }
 
   public static void navigateToProgramListPage(Stage currentStage) {

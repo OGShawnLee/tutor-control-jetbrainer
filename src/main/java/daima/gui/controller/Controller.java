@@ -1,12 +1,16 @@
 package daima.gui.controller;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import daima.App;
 import daima.business.AuthClient;
+import daima.business.dto.Searchable;
 import daima.common.ExceptionHandler;
 import daima.gui.AlertFacade;
 
@@ -32,6 +37,25 @@ public abstract class Controller {
   private static final String VIEW_ROOT_PATH = "/";
   @FXML
   protected Node container;
+
+  public static <T extends Searchable> void useConfigureSearch(
+    TextField fieldSearch,
+    ObservableList<T> searchableObservableList,
+    TableView<T> tableSearchable
+  ) {
+    FilteredList<T> filteredSearchableList = new FilteredList<>(
+      searchableObservableList, it -> true
+    );
+    fieldSearch.textProperty().addListener(
+      (observable, oldValue, newValue) -> filteredSearchableList.setPredicate(it ->
+        newValue == null || newValue.isEmpty() || it.getSearchableText().contains(newValue.toLowerCase())
+      ));
+    SortedList<T> sortedSearchableList = new SortedList<>(
+      filteredSearchableList
+    );
+    sortedSearchableList.comparatorProperty().bind(tableSearchable.comparatorProperty());
+    tableSearchable.setItems(sortedSearchableList);
+  }
 
   protected Stage getScene() {
     return (Stage) container.getScene().getWindow();
@@ -109,6 +133,14 @@ public abstract class Controller {
   }
 
   public static <T> Optional<T> getSelectedItemFromTable(TableView<T> table) {
+    T item = table.getSelectionModel().getSelectedItem();
+
+    if (item == null) {
+      AlertFacade.showWarningAndWait(
+        "Para realizar esta operación debe seleccionar una fila de la tabla."
+      );
+    }
+
     return Optional.ofNullable(table.getSelectionModel().getSelectedItem());
   }
 }
