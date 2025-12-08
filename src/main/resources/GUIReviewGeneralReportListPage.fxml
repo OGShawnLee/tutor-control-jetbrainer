@@ -31,6 +31,8 @@
                     text="Registrar Reporte"/>
             <Button mnemonicParsing="false" onMouseClicked="#onClickManageReport" styleClass="button"
                     text="Editar Reporte"/>
+            <Button mnemonicParsing="false" onMouseClicked="#onClickDeleteReport" styleClass="button"
+                    text="Eliminar Reporte"/>
             <Button mnemonicParsing="false" onMouseClicked="#onClickSendReport" styleClass="button"
                     text="Enviar Reporte"/>
           </HBox>
@@ -41,7 +43,7 @@
             <TableColumn fx:id="columnTutoringSessionKind" prefWidth="180.0" styleClass="column" text="Tutoría"/>
             <TableColumn fx:id="columnState" prefWidth="150.0" styleClass="column" text="Estado"/>
             <TableColumn fx:id="columnCoordinatorName" prefWidth="200.0" styleClass="column" text="Coordinador"/>
-            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="170.0" styleClass="column"
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
                          text="Fecha de Registro"/>
           </columns>
         </TableView>
