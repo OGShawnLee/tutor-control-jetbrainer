@@ -254,7 +254,6 @@ public class StaffDAO extends DAOShape<StaffDTO> {
     }
   }
 
-
   public boolean deleteOne(StaffDTO staffDTO) throws UserDisplayableException {
     try (
       Connection connection = DBConnector.getInstance().getConnection();
