@@ -41,8 +41,8 @@ public abstract class Controller {
    * Navigates the user to their respective landing page based on their role.
    */
   public void navigateToLandingPage() {
-    switch (AuthClient.getInstance().getCurrentStaff().getRole()) {
-      case ADMINISTRATOR:
+    switch (AuthClient.getInstance().getCurrentRole()) {
+      case ADMIN:
         navigateFromThisPageTo("Landing Page", "GUILandingAdminPage");
         break;
       case COORDINATOR:
