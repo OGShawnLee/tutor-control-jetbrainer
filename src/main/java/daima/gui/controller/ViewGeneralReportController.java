@@ -6,10 +6,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import daima.business.dto.ReportDTO;
+import daima.common.UserDisplayableException;
+import daima.gui.AlertFacade;
 import daima.gui.modal.ModalFacade;
 import daima.gui.modal.ModalFacadeConfiguration;
 
-public class ViewGeneralReportController extends Controller implements ContextController<ReportDTO> {
+public class ViewGeneralReportController extends Controller {
   @FXML
   private Label title;
   @FXML
@@ -24,37 +26,43 @@ public class ViewGeneralReportController extends Controller implements ContextCo
   private TextField fieldState;
   @FXML
   private TextArea fieldContent;
-  private ReportDTO generalReportDTO;
+  private ReportDTO reportDTO;
 
-  @Override
-  public void setContext(ReportDTO data) {
-    generalReportDTO = data;
-    loadData();
+  private void setContext(ReportDTO reportDTO) {
+    this.reportDTO = reportDTO;
+    configureData();
   }
 
-  private void loadData() {
-    if (generalReportDTO == null) return;
-
-    fieldPeriod.setText(generalReportDTO.getPeriod().toString());
-    fieldTutoringSessionKind.setText(generalReportDTO.getTutoringSessionKind().toString());
-    fieldFormattedCreatedAt.setText(generalReportDTO.getFormattedCreatedAt());
-    fieldNameCoordinator.setText(generalReportDTO.getNameStaff());
-    fieldState.setText(generalReportDTO.getState().toString());
-    fieldContent.setText(generalReportDTO.getContent());
+  private void configureData() {
+    fieldPeriod.setText(reportDTO.getPeriodDTO().toString());
+    fieldTutoringSessionKind.setText(reportDTO.getSessionKind().toString());
+    fieldFormattedCreatedAt.setText(reportDTO.getFormattedCreatedAt());
+    fieldNameCoordinator.setText(reportDTO.getNameStaff());
+    fieldState.setText(reportDTO.getState().toString());
+    fieldContent.setText(reportDTO.getContent());
   }
 
   public static void displayViewGeneralReportModal(ReportDTO reportDTO) {
-    ModalFacade.createAndDisplayContextModal(
-      new ModalFacadeConfiguration(
-        "Ver Reporte General",
-        "GUIViewGeneralReportModal"
-      ),
-      reportDTO
-    );
+    if (reportDTO == null) {
+      throw new IllegalArgumentException("El reporte ha visualizar no puede ser nulo.");
+    }
+
+    try {
+      ViewGeneralReportController controller = ModalFacade.displayModal(
+        new ModalFacadeConfiguration(
+          "Ver Reporte General",
+          "GUIViewGeneralReportModal"
+        )
+      );
+
+      controller.setContext(reportDTO);
+    } catch (UserDisplayableException e) {
+      AlertFacade.showErrorAndWait(e);
+    }
   }
 
   @Override
   public void onClickClose() {
-    super.close();;
+    super.close();
   }
 }

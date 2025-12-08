@@ -23,35 +23,35 @@
                   <children>
                     <Label styleClass="label" text="Periodo Escolar"/>
                     <TextField fx:id="fieldPeriod" promptText="Periodo Escolar"
-                               styleClass="input" editable="false"/>
+                               styleClass="input" disable="true"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Sesión de Tutoría"/>
                     <TextField fx:id="fieldTutoringSessionKind" promptText="Sesión de Tutoría"
-                               styleClass="input" editable="false"/>
+                               styleClass="input" disable="true"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Fecha de Registro"/>
                     <TextField fx:id="fieldFormattedCreatedAt" promptText="Fecha de Registro"
-                               styleClass="input" editable="false"/>
+                               styleClass="input" disable="true"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Coordinador"/>
                     <TextField fx:id="fieldNameCoordinator" promptText="Coordinador"
-                               styleClass="input" editable="false"/>
+                               styleClass="input" disable="true"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Estado"/>
                     <TextField fx:id="fieldState" promptText="Estado"
-                               styleClass="input" editable="false"/>
+                               styleClass="input" disable="true"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
@@ -61,12 +61,8 @@
                               styleClass="input" editable="false"/>
                   </children>
                 </VBox>
-                <HBox maxWidth="1.7976931348623157E308" spacing="16.0">
-                  <children>
-                    <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickClose"
-                            styleClass="button" text="Cerrar"/>
-                  </children>
-                </HBox>
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickClose"
+                        styleClass="button" text="Cerrar"/>
               </children>
             </VBox>
           </children>
