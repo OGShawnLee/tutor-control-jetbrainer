@@ -1,38 +1,77 @@
 package daima.business.dto;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-public class ProgramDTO implements Record {
+public class ProgramDTO implements Record, Searchable {
   private int id;
-  private final String name;
-  private final String acronym;
+  private int idCoordinator;
+  private String nameCoordinator;
+  private String name;
+  private String acronym;
   private LocalDateTime createdAt;
-
-  public ProgramDTO(String name, String acronym) {
-    this.name = name;
-    this.acronym = acronym;
-    this.createdAt = LocalDateTime.of(2020, 6, 1, 12, 0);
-  }
 
   public int getID() {
     return id;
+  }
+
+  public void setID(int id) {
+    this.id = id;
+  }
+
+  public Optional<Integer> getIDCoordinator() {
+    return Optional.ofNullable(idCoordinator == 0 ? null : idCoordinator);
+  }
+
+  public void setIDCoordinator(int idCoordinator) {
+    this.idCoordinator = idCoordinator;
+  }
+
+  public Optional<String> getNameCoordinator() {
+    return Optional.ofNullable(nameCoordinator);
+  }
+
+  public void setNameCoordinator(String nameCoordinator) {
+    this.nameCoordinator = nameCoordinator;
   }
 
   public String getName() {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public String getAcronym() {
     return acronym;
   }
 
-  @Override
-  public String toString() {
-    return acronym + " (" + name + ")";
+  public void setAcronym(String acronym) {
+    this.acronym = acronym;
   }
 
   @Override
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s (%s)", acronym, name);
+  }
+
+  @Override
+  public String getSearchableText() {
+    return String.format("%s %s %s %s",
+      getAcronym(),
+      getName(),
+      getNameCoordinator(),
+      getFormattedCreatedAt()
+    ).toLowerCase();
   }
 }

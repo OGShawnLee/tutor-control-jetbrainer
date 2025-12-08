@@ -1,8 +1,8 @@
 package daima.business.dto;
 
+import daima.business.validator.Utility;
+
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Record interface representing an entity with a creation timestamp.
@@ -22,7 +22,6 @@ public interface Record {
    * @return Formatted creation date string.
    */
   default String getFormattedCreatedAt() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd '/' MMMM '/' yyyy, HH:mm", Locale.forLanguageTag("es-ES"));
-    return getCreatedAt().format(formatter);
+    return Utility.getFormattedLocalDateTime(getCreatedAt());
   }
 }
