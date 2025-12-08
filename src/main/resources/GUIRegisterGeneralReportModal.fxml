@@ -21,13 +21,6 @@
               <children>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
-                    <Label styleClass="label" text="Periodo Escolar"/>
-                    <TextField fx:id="fieldPeriod" promptText="Periodo Escolar"
-                               styleClass="input" editable="false"/>
-                  </children>
-                </VBox>
-                <VBox prefWidth="360.0" spacing="8.0">
-                  <children>
                     <Label styleClass="label" text="Sesión de Tutoría"/>
                     <TextField fx:id="fieldTutoringSessionKind" promptText="Sesión de Tutoría"
                                styleClass="input" editable="false"/>
