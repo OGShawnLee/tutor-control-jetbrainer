@@ -245,7 +245,6 @@ public class StaffDAO extends DAOShape<StaffDTO> {
       ResultSet resultSet = statement.executeQuery()
     ) {
       if (resultSet.next()) {
-        System.out.println(resultSet.getInt(1));
         return resultSet.getInt(1) > 0;
       }
 
