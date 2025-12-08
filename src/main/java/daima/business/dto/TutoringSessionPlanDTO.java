@@ -1,67 +1,90 @@
 package daima.business.dto;
 
-import daima.business.enumeration.Semester;
 import daima.business.enumeration.TutoringSessionKind;
 import daima.business.enumeration.TutoringSessionPlanState;
+import daima.business.validator.Utility;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
-public class TutoringSessionPlanDTO implements Record {
+public class TutoringSessionPlanDTO implements Record, Searchable {
   private int id;
-  private final LocalDate appointmentDate;
-  private final TutoringSessionKind kind;
-  private LocalDateTime createdAt = LocalDateTime.now();
-  private final int idCoordinator;
-  private String nameCoordinator;
-  private final int idProgram;
-  private final PeriodDTO period = new PeriodDTO(2024, Semester.FEB_JUL);
-
-  public TutoringSessionPlanDTO(LocalDate appointmentDate, TutoringSessionKind kind, int idCoordinator, int idProgram) {
-    this.appointmentDate = appointmentDate;
-    this.kind = kind;
-    this.idCoordinator = idCoordinator;
-    this.nameCoordinator = "Shawn Lee";
-    this.idProgram = idProgram;
-  }
+  private int idProgram;
+  private PeriodDTO periodDTO;
+  private TutoringSessionPlanState state;
+  private TutoringSessionKind kind;
+  private LocalDate appointmentDate;
+  private LocalDateTime createdAt;
 
   public int getID() {
     return id;
   }
 
-  public TutoringSessionPlanState getState() {
-    return appointmentDate.isAfter(LocalDate.now())
-      ? TutoringSessionPlanState.SCHEDULED
-      : TutoringSessionPlanState.CONCLUDED;
-  }
-
-  public LocalDate getAppointmentDate() {
-    return appointmentDate;
-  }
-
-  public TutoringSessionKind getKind() {
-    return kind;
-  }
-
-  public int getIDCoordinator() {
-    return idCoordinator;
-  }
-
-  public String getNameCoordinator() {
-    return nameCoordinator;
+  public void setID(int id) {
+    this.id = id;
   }
 
   public int getIDProgram() {
     return idProgram;
   }
 
-  public PeriodDTO getPeriod() {
-    return period;
+  public void setIDProgram(int idProgram) {
+    this.idProgram = idProgram;
+  }
+
+  public PeriodDTO getPeriodDTO() {
+    return periodDTO;
+  }
+
+  public void setPeriodDTO(PeriodDTO periodDTO) {
+    this.periodDTO = periodDTO;
+  }
+
+  public TutoringSessionPlanState getState() {
+    return state;
+  }
+
+  public void setState(TutoringSessionPlanState state) {
+    this.state = state;
+  }
+
+  public TutoringSessionKind getKind() {
+    return kind;
+  }
+
+  public void setKind(TutoringSessionKind kind) {
+    this.kind = kind;
+  }
+
+  public LocalDate getAppointmentDate() {
+    return appointmentDate;
+  }
+
+  public void setAppointmentDate(LocalDate appointmentDate) {
+    this.appointmentDate = appointmentDate;
   }
 
   @Override
   public LocalDateTime getCreatedAt() {
     return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public String getFormattedAppointmentDate() {
+    return Utility.getFormattedLocalDate(appointmentDate);
+  }
+
+  @Override
+  public String getSearchableText() {
+    return String.format("%s %s %s %s %s",
+      getPeriodDTO(),
+      getKind(),
+      getState(),
+      getFormattedAppointmentDate(),
+      getFormattedCreatedAt()
+    ).toLowerCase();
   }
 }
