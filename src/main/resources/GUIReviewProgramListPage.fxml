@@ -18,7 +18,8 @@
       <children>
         <HBox alignment="CENTER_LEFT" spacing="16.0">
           <children>
-            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Buscar Programas Educativos" styleClass="input"/>
+            <TextField fx:id="fieldSearch" prefWidth="420.0" promptText="Buscar Programas Educativos"
+                       styleClass="input"/>
           </children>
         </HBox>
         <HBox alignment="CENTER_LEFT" prefHeight="32.0" spacing="32.0">
@@ -33,10 +34,10 @@
         </HBox>
         <TableView fx:id="tableProgram" prefWidth="950.0" VBox.vgrow="ALWAYS">
           <columns>
-            <TableColumn fx:id="columnProgramID" prefWidth="50.0" styleClass="column" text="ID"/>
-            <TableColumn fx:id="columnAcronym" prefWidth="140.0" text="Acrónimo"/>
-            <TableColumn fx:id="columnName" prefWidth="240.0" styleClass="column" text="Nombre"/>
-            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="170.0" styleClass="column"
+            <TableColumn fx:id="columnAcronym" prefWidth="100.0" text="Acrónimo"/>
+            <TableColumn fx:id="columnName" prefWidth="360.0" styleClass="column" text="Nombre"/>
+            <TableColumn fx:id="columnNameCoordinator" prefWidth="200.0" styleClass="column" text="Coordinador"/>
+            <TableColumn fx:id="columnFormattedCreatedAt" prefWidth="200.0" styleClass="column"
                          text="Fecha de Registro"/>
           </columns>
         </TableView>
