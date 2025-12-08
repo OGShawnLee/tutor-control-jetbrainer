@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+import daima.App;
 import daima.common.ExceptionHandler;
 import daima.common.UserDisplayableException;
 
@@ -20,7 +21,7 @@ public class ModalFacade {
 
   public static FXMLLoader createFXMLLoader(String resourceFileName) throws IOException {
     return new FXMLLoader(
-      Objects.requireNonNull(ModalFacade.class.getResource("/" + resourceFileName + ".fxml"))
+      Objects.requireNonNull(App.class.getResource("/" + resourceFileName + ".fxml"))
     );
   }
 
