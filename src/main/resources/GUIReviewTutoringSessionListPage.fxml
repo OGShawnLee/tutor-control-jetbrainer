@@ -31,8 +31,6 @@
                     text="Reagendar Horario"/>
             <Button mnemonicParsing="false" onMouseClicked="#onClickConfirmAttendance" styleClass="button"
                     text="Confirmar Asistencia"/>
-            <Button mnemonicParsing="false" onMouseClicked="#onClickConfirmAbsence" styleClass="button"
-                    text="Confirmar Ausencia"/>
           </HBox>
         </HBox>
         <TableView fx:id="tableTutoringSession" prefWidth="950.0" VBox.vgrow="ALWAYS">
