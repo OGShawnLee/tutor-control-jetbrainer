@@ -46,8 +46,8 @@
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Número de Personal"/>
-                    <PasswordField fx:id="fieldIDWorker" promptText="Introduzca su Número de Personal"
-                                   styleClass="input"/>
+                    <TextField fx:id="fieldIDWorker" promptText="Introduzca su Número de Personal"
+                               styleClass="input"/>
                     <Label fx:id="labelTagIDWorker" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
@@ -62,8 +62,8 @@
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Confirmar Contraseña"/>
-                    <TextField fx:id="fieldConfirmPassword" promptText="Confirme su Contraseña"
-                               styleClass="input"/>
+                    <PasswordField fx:id="fieldConfirmPassword" promptText="Confirme su Contraseña"
+                                   styleClass="input"/>
                     <Label fx:id="labelTagConfirmPassword" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
