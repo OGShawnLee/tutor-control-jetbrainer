@@ -21,10 +21,14 @@ import java.util.ArrayList;
 
 public class TutoringSessionDAO extends DAOShape<TutoringSessionDTO> {
   private static final Logger LOGGER = LogManager.getLogger(TutoringSessionDAO.class);
-  private static final String CREATE_ONE_QUERY = "INSERT INTO TutoringSession (tutored_id, tutor_id, session_plan_id, hour) VALUES (?, ?, ?, ?)";
-  private static final String GET_ALL_BY_TUTOR_AND_PERIOD = "SELECT * FROM CompleteTutoringSessionView WHERE tutor_id = ? AND period_year = ? AND period_semester = ? ORDER BY created_at";
-  private static final String GET_ALL_BY_TUTOR = "SELECT * FROM CompleteTutoringSessionView WHERE tutor_id = ? ORDER BY created_At";
-  private static final String UPDATE_ONE_QUERY = "UPDATE TutoringSession SET hour = ?, state = ? WHERE id = ?";
+  private static final String CREATE_ONE_QUERY
+    = "INSERT INTO TutoringSession (tutored_id, tutor_id, session_plan_id, hour) VALUES (?, ?, ?, ?)";
+  private static final String GET_ALL_BY_TUTOR_AND_PERIOD
+    = "SELECT * FROM CompleteTutoringSessionView WHERE tutor_id = ? AND period_year = ? AND period_semester = ? ORDER BY created_at DESC";
+  private static final String GET_ALL_BY_TUTOR
+    = "SELECT * FROM CompleteTutoringSessionView WHERE tutor_id = ? ORDER BY created_at DESC";
+  private static final String UPDATE_ONE_QUERY
+    = "UPDATE TutoringSession SET hour = ?, state = ? WHERE id = ?";
   private static final TutoringSessionDAO INSTANCE = new TutoringSessionDAO();
 
   public static TutoringSessionDAO getInstance() {

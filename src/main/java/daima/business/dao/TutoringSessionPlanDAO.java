@@ -27,9 +27,9 @@ public class TutoringSessionPlanDAO extends DAOShape<TutoringSessionPlanDTO> {
     = "INSERT INTO TutoringSessionPlan (program_id, period_year, period_semester, kind, appointment_date) VALUES (?, ?, ?, ?, ?)";
   private static final String FIND_LATEST_BY_PROGRAM_QUERY
     = "SELECT * FROM CompleteTutoringSessionPlanView WHERE program_id = ? ORDER BY created_at DESC LIMIT 1";
-  private static final String GET_ALL_BY_PROGRAM_QUERY = "SELECT * FROM CompleteTutoringSessionPlanView WHERE program_id = ? ORDER BY created_at";
+  private static final String GET_ALL_BY_PROGRAM_QUERY = "SELECT * FROM CompleteTutoringSessionPlanView WHERE program_id = ? ORDER BY created_at DESC";
   private static final String GET_ALL_BY_PROGRAM_AND_PERIOD_QUERY
-    = "SELECT * FROM CompleteTutoringSessionPlanView WHERE program_id = ? AND period_year = ? AND period_semester = ? ORDER BY created_at";
+    = "SELECT * FROM CompleteTutoringSessionPlanView WHERE program_id = ? AND period_year = ? AND period_semester = ? ORDER BY created_at DESC";
   private static final String GET_ONE_QUERY = "SELECT * FROM CompleteTutoringSessionPlanView WHERE id = ?";
   private static final TutoringSessionPlanDAO INSTANCE = new TutoringSessionPlanDAO();
 

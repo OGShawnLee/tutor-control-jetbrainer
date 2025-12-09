@@ -24,11 +24,11 @@ public class StaffDAO extends DAOShape<StaffDTO> {
     "INSERT INTO Staff (name, last_name, email, worker_id, password) VALUES (?, ?, ?, ?, ?)";
   private static final String FIND_ONE_BY_EMAIL_QUERY = "SELECT * FROM CompleteStaffView WHERE email = ?";
   private static final String FIND_ONE_BY_WORKER_ID_QUERY = "SELECT * FROM CompleteStaffView WHERE worker_id = ?";
-  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteStaffView ORDER BY created_at";
+  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteStaffView ORDER BY created_at DESC";
   private static final String GET_ALL_BY_ROLE_QUERY =
-    "SELECT * FROM CompleteStaffView CT WHERE EXISTS(SELECT 1 FROM Role R WHERE R.staff_id = CT.staff_id AND R.role = ?) ORDER BY created_at";
+    "SELECT * FROM CompleteStaffView CT WHERE EXISTS(SELECT 1 FROM Role R WHERE R.staff_id = CT.staff_id AND R.role = ?) ORDER BY created_at DESC";
   private static final String GET_ALL_TUTOR_BY_PROGRAM_QUERY =
-    "SELECT * FROM CompleteStaffView C WHERE EXISTS(SELECT 1 FROM Role R WHERE R.staff_id = C.staff_id) AND EXISTS(SELECT 1 FROM Tutors T WHERE T.staff_id = C.staff_id AND program_id = ?) ORDER BY created_at";
+    "SELECT * FROM CompleteStaffView C WHERE EXISTS(SELECT 1 FROM Role R WHERE R.staff_id = C.staff_id) AND EXISTS(SELECT 1 FROM Tutors T WHERE T.staff_id = C.staff_id AND program_id = ?) ORDER BY created_at DESC";
   private static final String GET_ONE_QUERY = "SELECT * FROM CompleteStaffView WHERE staff_id = ?";
   private static final String UPDATE_ONE_QUERY =
     "UPDATE Staff SET name = ?, last_name = ?, email = ?, worker_id = ?, password = ? WHERE staff_id = ?";

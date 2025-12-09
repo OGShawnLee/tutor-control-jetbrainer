@@ -22,10 +22,10 @@ public class TutoredDAO extends DAOShape<TutoredDTO> {
   private static final String CREATE_ONE_QUERY =
     "INSERT INTO Tutored (name, last_name, email, enrollment, program_id) VALUES (?, ?, ?, ?, ?)";
   private static final String FIND_ONE_BY_ENROLLMENT_QUERY = "SELECT * FROM CompleteTutoredView WHERE enrollment = ?";
-  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteTutoredView ORDER BY created_at";
-  private static final String GET_ALL_BY_TUTOR_QUERY = "SELECT * FROM CompleteTutoredView WHERE tutor_id = ? ORDER BY created_at";
-  private static final String GET_ALL_BY_PROGRAM_QUERY = "SELECT * FROM CompleteTutoredView WHERE program_id = ? ORDER BY created_at";
-  private static final String GET_ALL_BY_PROGRAM_AND_TUTOR_QUERY = "SELECT * FROM CompleteTutoredView WHERE program_id = ? AND tutor_id = ? ORDER BY created_at";
+  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteTutoredView ORDER BY created_at DESC";
+  private static final String GET_ALL_BY_TUTOR_QUERY = "SELECT * FROM CompleteTutoredView WHERE tutor_id = ? ORDER BY created_at DESC";
+  private static final String GET_ALL_BY_PROGRAM_QUERY = "SELECT * FROM CompleteTutoredView WHERE program_id = ? ORDER BY created_at DESC";
+  private static final String GET_ALL_BY_PROGRAM_AND_TUTOR_QUERY = "SELECT * FROM CompleteTutoredView WHERE program_id = ? AND tutor_id = ? ORDER BY created_at DESC";
   private static final String GET_ONE_QUERY = "SELECT * FROM CompleteTutoredView WHERE tutored_id = ?";
   private static final String UPDATE_ONE_QUERY =
     "UPDATE Tutored SET name = ?, last_name = ?, email = ?, enrollment = ?, state = ?, program_id = ?, tutor_id = ? WHERE tutored_id = ?";

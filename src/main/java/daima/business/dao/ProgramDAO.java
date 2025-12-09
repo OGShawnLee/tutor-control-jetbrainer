@@ -18,10 +18,10 @@ import daima.db.DBConnector;
 public class ProgramDAO extends DAOShape<ProgramDTO> {
   private static final Logger LOGGER = LogManager.getLogger(ProgramDAO.class);
   private static final String CREATE_ONE_QUERY = "INSERT INTO Program (name, acronym) VALUES (?, ?)";
-  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteProgramView ORDER BY created_at";
+  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteProgramView ORDER BY created_at DESC";
   private static final String GET_ALL_BY_TUTOR_QUERY =
     "SELECT * FROM CompleteProgramView CP WHERE EXISTS(SELECT 1 FROM Tutors T WHERE T.program_id = CP.program_id AND T.staff_id = ?)";
-  private static final String GET_ALL_WITH_NO_COORDINATOR_QUERY = "SELECT * FROM CompleteProgramView WHERE coordinator_id IS NULL ORDER BY created_at";
+  private static final String GET_ALL_WITH_NO_COORDINATOR_QUERY = "SELECT * FROM CompleteProgramView WHERE coordinator_id IS NULL ORDER BY created_at DESC";
   private static final String GET_ONE_QUERY = "SELECT * FROM CompleteProgramView WHERE program_id = ?";
   private static final String GET_ONE_BY_COORDINATOR = "SELECT * FROM CompleteProgramView WHERE coordinator_id = ?";
   private static final String FIND_ONE_BY_ACRONYM_QUERY = "SELECT * FROM CompleteProgramView WHERE acronym = ?";

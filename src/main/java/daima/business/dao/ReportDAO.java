@@ -26,9 +26,9 @@ public class ReportDAO extends DAOShape<ReportDTO> {
     "INSERT INTO Report (staff_id, session_plan_id, content, type) VALUES (?, ?, ?, ?)";
   private static final String FIND_ONE_GENERAL_REPORT_BY_SESSION_PLAN_QUERY =
     "SELECT * FROM CompleteReportView WHERE type = 'GENERAL_REPORT' AND session_plan_id = ?";
-  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteReportView WHERE type = ?";
+  private static final String GET_ALL_QUERY = "SELECT * FROM CompleteReportView WHERE type = ? ORDER BY created_at";
   private static final String GET_ALL_BY_PROGRAM_QUERY =
-    "SELECT * FROM CompleteReportView WHERE type = ? AND program_id = ?";
+    "SELECT * FROM CompleteReportView WHERE type = ? AND program_id = ? ORDER BY created_at";
   private static final String GET_ONE_QUERY = "SELECT * FROM CompleteReportView WHERE id = ? AND type = ?";
   private static final String UPDATE_ONE_QUERY = "UPDATE Report SET content = ?, state = ? WHERE id = ?";
   private static final String DELETE_ONE_QUERY = "DELETE FROM Report WHERE id = ?";
