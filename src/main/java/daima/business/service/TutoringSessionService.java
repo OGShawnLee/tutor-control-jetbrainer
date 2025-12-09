@@ -1,5 +1,6 @@
 package daima.business.service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import daima.business.dao.TutoringSessionDAO;
@@ -20,11 +21,21 @@ public class TutoringSessionService {
 
   public boolean confirmAttendance(TutoringSessionDTO sessionDTO) throws UserDisplayableException {
     if (sessionDTO.getState() != AppointmentState.SCHEDULED) {
-      throw new BusinessRuleException("No es posible confirmar asistencia debido a que solo se pueden confirmar sesiones que estan programadas.");
+      throw new BusinessRuleException(
+        "No es posible confirmar asistencia debido a que solo se pueden confirmar sesiones que estan programadas."
+      );
     }
 
-    sessionDTO.setState(AppointmentState.COMPLETED);
-    return TutoringSessionDAO.getInstance().updateOne(sessionDTO);
+    LocalDate now = LocalDate.now();
+
+    if (now.isEqual(sessionDTO.getAppointmentDate())) {
+      sessionDTO.setState(AppointmentState.COMPLETED);
+      return TutoringSessionDAO.getInstance().updateOne(sessionDTO);
+    }
+
+    throw new BusinessRuleException(
+      "No es posible confirmar asistencia debido a que solo se pueden confirmar durante el día de la sesión de tutoría."
+    );
   }
 
   public TutoringSessionPlanDTO getLatestSessionPlanForRegistration(int idProgram) throws UserDisplayableException {
