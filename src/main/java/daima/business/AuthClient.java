@@ -38,7 +38,9 @@ public class AuthClient {
         ProgramDTO programDTO = ProgramDAO.getInstance().getOneByCoordinator(staffDTO.getID());
         this.currentStaff.setCoordinatedProgram(programDTO);
       } catch (UserDisplayableException e) {
-        throw new UserDisplayableException("No ha sido posible obtener el programa educativo asociado al coordinador.");
+        throw new UserDisplayableException(
+          "No ha sido posible obtener el programa educativo asociado al coordinador. Si el problema persiste, contacte a un administrador."
+        );
       }
     }
 
