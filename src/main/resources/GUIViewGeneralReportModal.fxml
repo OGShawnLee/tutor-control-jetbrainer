@@ -5,7 +5,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
@@ -22,43 +21,40 @@
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Periodo Escolar"/>
-                    <TextField fx:id="fieldPeriod" promptText="Periodo Escolar"
-                               styleClass="input" disable="true"/>
+                    <TextField fx:id="fieldPeriod" disable="true" promptText="Periodo Escolar" styleClass="input"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Sesión de Tutoría"/>
-                    <TextField fx:id="fieldTutoringSessionKind" promptText="Sesión de Tutoría"
-                               styleClass="input" disable="true"/>
+                    <TextField fx:id="fieldTutoringSessionKind" disable="true" promptText="Sesión de Tutoría"
+                               styleClass="input"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Fecha de Registro"/>
-                    <TextField fx:id="fieldFormattedCreatedAt" promptText="Fecha de Registro"
-                               styleClass="input" disable="true"/>
+                    <TextField fx:id="fieldFormattedCreatedAt" disable="true" promptText="Fecha de Registro"
+                               styleClass="input"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Coordinador"/>
-                    <TextField fx:id="fieldNameCoordinator" promptText="Coordinador"
-                               styleClass="input" disable="true"/>
+                    <TextField fx:id="fieldNameCoordinator" disable="true" promptText="Coordinador" styleClass="input"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Estado"/>
-                    <TextField fx:id="fieldState" promptText="Estado"
-                               styleClass="input" disable="true"/>
+                    <TextField fx:id="fieldState" disable="true" promptText="Estado" styleClass="input"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Reporte"/>
-                    <TextArea fx:id="fieldContent" promptText="Introduzca su Reporte"
-                              styleClass="input" editable="false"/>
+                    <TextArea fx:id="fieldContent" editable="false" promptText="Introduzca su Reporte"
+                              styleClass="input" wrapText="true"/>
                   </children>
                 </VBox>
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onClickClose"

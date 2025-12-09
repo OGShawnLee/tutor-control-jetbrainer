@@ -30,7 +30,7 @@
                   <children>
                     <Label styleClass="label" text="Reporte"/>
                     <TextArea fx:id="fieldContent" promptText="Introduzca su Reporte"
-                              styleClass="input"/>
+                              styleClass="input" wrapText="true"/>
                     <Label fx:id="labelTagContent" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
