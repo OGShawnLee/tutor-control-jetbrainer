@@ -145,6 +145,11 @@ public class UpdateProfileController extends Controller {
     editStaffDTO.setName(fieldName.getText());
     editStaffDTO.setLastName(fieldLastName.getText());
     editStaffDTO.setEmail(fieldEmail.getText());
+
+    if (!fieldPassword.getText().trim().isEmpty()) {
+      editStaffDTO.setPassword(fieldPassword.getText().trim());
+    }
+
     return editStaffDTO;
   }
 

@@ -28,7 +28,7 @@
                     text="Volver a Inicio"/>
             <Button mnemonicParsing="false" onMouseClicked="#onClickRegisterStaff" styleClass="button"
                     text="Registrar Miembro de Personal"/>
-            <Button mnemonicParsing="false" onMouseClicked="#onClickManageStaff" styleClass="button" disable="true"
+            <Button mnemonicParsing="false" onMouseClicked="#onClickManageStaff" styleClass="button"
                     text="Editar Miembro de Personal"/>
             <Button mnemonicParsing="false" onMouseClicked="#onClickDeleteStaff" styleClass="button"
                     text="Eliminar Miembro de Personal"/>

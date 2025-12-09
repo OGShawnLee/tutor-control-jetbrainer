@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import daima.business.dao.ProgramDAO;
 import daima.business.dao.StaffDAO;
 import daima.business.dto.StaffDTO;
 import daima.business.dto.ProgramDTO;
@@ -49,18 +50,18 @@ public class RegisterStaffController extends Controller {
   @FXML
   private Label labelTagStaffRole;
   @FXML
-  private CheckComboBox<ProgramDTO> fieldProgramTutor;
+  private CheckComboBox<ProgramDTO> fieldTutoredProgram;
   @FXML
   private Label labelTagProgramTutor;
   private StaffDTO editStaffDTO;
 
   private void setContext(ArrayList<ProgramDTO> programDTOList, StaffDTO editStaffDTO) {
     this.editStaffDTO = editStaffDTO;
-    loadEditData();
     configureTitle();
-    configureFieldProgram(programDTOList);
+    configureFieldTutoredProgram(programDTOList);
     configureFieldStaffRole();
     configureEnableFieldProgramOnRoleSelection();
+    configureEditFormData();
   }
 
   public void initialize() {
@@ -75,26 +76,54 @@ public class RegisterStaffController extends Controller {
     }
   }
 
-  private void loadEditData() {
+  private void configureEditFormData() {
     if (editStaffDTO == null) return;
 
     fieldName.setText(editStaffDTO.getName());
     fieldLastName.setText(editStaffDTO.getLastName());
     fieldEmail.setText(editStaffDTO.getEmail());
     fieldIDWorker.setText(editStaffDTO.getIDWorker());
+
+    disableImmutableFields();
+    checkEditStaffDTORoles();
+    checkEditStaffDTOTutoredProgramList();
+  }
+
+  private void disableImmutableFields() {
+    fieldEmail.setDisable(true);
+    fieldIDWorker.setDisable(true);
+  }
+
+  private void checkEditStaffDTORoles() {
+    for (StaffRole role : editStaffDTO.getRoles()) {
+      fieldStaffRole.getCheckModel().check(role);
+    }
+  }
+
+  private void checkEditStaffDTOTutoredProgramList() {
+    if (editStaffDTO.getRoles().contains(StaffRole.TUTOR)) {
+      fieldTutoredProgram.getItems().forEach(it -> {
+        for (ProgramDTO programDTO : editStaffDTO.getProgramTutoredList()) {
+          if (it.getID() == programDTO.getID()) {
+            fieldTutoredProgram.getCheckModel().check(it);
+            break;
+          }
+        }
+      });
+    }
   }
 
   private void configureEnableFieldProgramOnRoleSelection() {
     fieldStaffRole.getCheckModel().getCheckedItems().addListener(
       (InvalidationListener) observable -> {
         ObservableList<StaffRole> roles = fieldStaffRole.getCheckModel().getCheckedItems();
-        fieldProgramTutor.setDisable(!roles.contains(StaffRole.TUTOR));
+        fieldTutoredProgram.setDisable(!roles.contains(StaffRole.TUTOR));
       }
     );
   }
 
-  private void configureFieldProgram(ArrayList<ProgramDTO> programDTOList) {
-    fieldProgramTutor.getItems().setAll(programDTOList);
+  private void configureFieldTutoredProgram(ArrayList<ProgramDTO> programDTOList) {
+    fieldTutoredProgram.getItems().setAll(programDTOList);
   }
 
   private void configureFieldStaffRole() {
@@ -135,16 +164,18 @@ public class RegisterStaffController extends Controller {
       isInvalidData = true;
     }
 
-    result = Validator.getEmailValidationResult(fieldEmail.getText());
-    if (result.isInvalid()) {
-      labelTagEmail.setText(result.getError());
-      isInvalidData = true;
-    }
+    if (editStaffDTO == null) {
+      result = Validator.getEmailValidationResult(fieldEmail.getText());
+      if (result.isInvalid()) {
+        labelTagEmail.setText(result.getError());
+        isInvalidData = true;
+      }
 
-    result = Validator.getWorkerIDValidationResult(fieldIDWorker.getText());
-    if (result.isInvalid()) {
-      labelTagIDWorker.setText(result.getError());
-      isInvalidData = true;
+      result = Validator.getWorkerIDValidationResult(fieldIDWorker.getText());
+      if (result.isInvalid()) {
+        labelTagIDWorker.setText(result.getError());
+        isInvalidData = true;
+      }
     }
 
     ObservableList<StaffRole> roles = fieldStaffRole.getCheckModel().getCheckedItems();
@@ -154,7 +185,7 @@ public class RegisterStaffController extends Controller {
       isInvalidData = true;
     }
 
-    if (roles.contains(StaffRole.TUTOR) && fieldProgramTutor.getCheckModel().getCheckedItems().isEmpty()) {
+    if (roles.contains(StaffRole.TUTOR) && fieldTutoredProgram.getCheckModel().getCheckedItems().isEmpty()) {
       labelTagProgramTutor.setText("Debe seleccionar al menos un programa educativo para el rol de tutor.");
       isInvalidData = true;
     }
@@ -163,23 +194,28 @@ public class RegisterStaffController extends Controller {
   }
 
   private StaffDTO getStaffDTOFromInput() throws InvalidFieldException {
-    StaffDTO staffDTO = new StaffDTO();
+    StaffDTO staffDTO = editStaffDTO == null ? new StaffDTO() : editStaffDTO;
+
     staffDTO.setName(fieldName.getText().trim());
     staffDTO.setLastName(fieldLastName.getText().trim());
-    staffDTO.setEmail(fieldEmail.getText().trim());
-    staffDTO.setIDWorker(fieldIDWorker.getText().trim());
+
+    if (editStaffDTO == null) {
+      staffDTO.setEmail(fieldEmail.getText().trim());
+      staffDTO.setIDWorker(fieldIDWorker.getText().trim());
+      staffDTO.setPassword(StaffDAO.createDefaultPassword(fieldIDWorker.getText()));
+    }
+
     staffDTO.setRoles(
       new ArrayList<>(fieldStaffRole.getCheckModel().getCheckedItems())
     );
     staffDTO.setProgramTutoredList(
-      new ArrayList<>(fieldProgramTutor.getCheckModel().getCheckedItems())
+      new ArrayList<>(fieldTutoredProgram.getCheckModel().getCheckedItems())
     );
-    staffDTO.setPassword(StaffDAO.createDefaultPassword(fieldIDWorker.getText()));
+
     return staffDTO;
   }
 
   private void handleDuplicateStaffVerification() throws UserDisplayableException, InvalidFieldException {
-
     Optional<StaffDTO> existingStaffDTO = StaffDAO.getInstance().findOneByEmail(fieldEmail.getText().trim());
 
     if (existingStaffDTO.isPresent()) {
@@ -198,53 +234,27 @@ public class RegisterStaffController extends Controller {
   }
 
   private boolean getUpdateConfirmation() {
-    String originalEmail = editStaffDTO.getEmail().trim();
-    String newEmail = fieldEmail.getText().trim();
-
-    if (!originalEmail.equals(newEmail)) {
-      boolean shallUpdate = AlertFacade.showConfirmationAndWait(
-        String.format(
-          "¿Esta seguro de que desea cambiar el correo electrónico del miembro de personal de %s a %s?",
-          originalEmail,
-          newEmail
-        )
-      );
-
-      if (!shallUpdate) return false;
-    }
-
-    String originalWorkerID = editStaffDTO.getIDWorker().trim();
-    String newWorkerID = fieldIDWorker.getText().trim();
-
-    if (!originalWorkerID.equals(newWorkerID)) {
-      return AlertFacade.showConfirmationAndWait(
-        String.format(
-          "¿Esta seguro de que desea cambiar el número de empleado del miembro de personal de %s a %s?",
-          originalWorkerID,
-          newWorkerID
-        )
-      );
-    }
-
-    ArrayList<StaffRole> originalRoles = editStaffDTO.getRoles();
-    ArrayList<StaffRole> newRoles = new ArrayList<>(fieldStaffRole.getCheckModel().getCheckedItems());
-
-    if (!originalRoles.equals(newRoles)) {
-      return AlertFacade.showConfirmationAndWait(
-        "¿Esta seguro de que desea cambiar los roles del miembro de personal?"
-      );
-    }
-
-    return true;
+    return AlertFacade.showConfirmationAndWait(
+      "¿Está seguro de que desea modificar los datos del miembro de personal? " +
+        "En caso de que el miembro de personal haya dejado de ser tutor o cambie de programa educativo, entonces todos los tutorados correspondientes se quedarán sin tutor y tendrán que ser asignados nuevamente."
+    );
   }
 
   private void registerStaff() throws InvalidFieldException, UserDisplayableException {
+    handleDuplicateStaffVerification();
     StaffService.getInstance().createStaff(getStaffDTOFromInput());
-    AlertFacade.showSuccessAndWait("El miembro de personal ha sido registrado exitosamente.");
+    AlertFacade.showSuccessAndWait(
+      "El miembro de personal ha sido registrado exitosamente. La contraseña generada es el número de personal seguido de ‘@Password’. Es posible cambiarla"
+    );
   }
 
-  private void updateStaff() {
-    // TODO: Add Update Staff
+  private void updateStaff() throws InvalidFieldException, UserDisplayableException {
+    boolean shallUpdate = getUpdateConfirmation();
+
+    if (shallUpdate) {
+      StaffService.getInstance().updateStaff(getStaffDTOFromInput());
+      AlertFacade.showSuccessAndWait("El miembro de personal ha sido actualizado exitosamente.");
+    }
   }
 
   public void onClickRegisterStaff() {
@@ -254,7 +264,6 @@ public class RegisterStaffController extends Controller {
 
     try {
       if (editStaffDTO == null) {
-        handleDuplicateStaffVerification();
         registerStaff();
       } else {
         updateStaff();
@@ -267,6 +276,12 @@ public class RegisterStaffController extends Controller {
   public static void displayManageStaffModal(Runnable onClose, StaffDTO staffDTO) {
     try {
       ArrayList<ProgramDTO> programDTOList = ProgramService.getInstance().getAllForRegistration();
+
+      if (staffDTO != null && staffDTO.getRoles().contains(StaffRole.TUTOR)) {
+        staffDTO.setProgramTutoredList(
+          ProgramDAO.getInstance().getAllByTutor(staffDTO.getID())
+        );
+      }
 
       RegisterStaffController controller = ModalFacade.displayModal(
         new ModalFacadeConfiguration(

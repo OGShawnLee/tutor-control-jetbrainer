@@ -80,10 +80,9 @@ public class ReviewStaffListController extends Controller {
   }
 
   public void onClickManageStaff() {
-    getSelectedItemFromTable(tableStaff).ifPresent(it -> {
-      AlertFacade.showInformationAndWait("No es posible realizar esta acción ya que aún no ha sido implementada.");
-      // RegisterStaffController.displayManageStaffModal(this::setTableItems, it)
-    });
+    getSelectedItemFromTable(tableStaff).ifPresent(it ->
+      RegisterStaffController.displayManageStaffModal(this::setTableItems, it)
+    );
   }
 
   public void deleteStaff(StaffDTO staffDTO) {

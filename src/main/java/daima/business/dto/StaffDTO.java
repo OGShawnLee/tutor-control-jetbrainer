@@ -1,9 +1,10 @@
 package daima.business.dto;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import daima.business.enumeration.StaffRole;
 import daima.business.validator.Validator;
 import daima.common.InvalidFieldException;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,11 @@ public class StaffDTO extends Person {
   }
 
   public void setRoles(String roles) {
+    if (roles == null) {
+      this.roles = new ArrayList<>();
+      return;
+    }
+
     this.roles = Arrays.stream(roles.split(",")).map(it -> StaffRole.valueOf(it.trim())).collect(Collectors.toCollection(ArrayList::new));
   }
 

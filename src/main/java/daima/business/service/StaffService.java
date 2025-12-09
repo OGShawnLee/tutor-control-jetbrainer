@@ -46,7 +46,7 @@ public class StaffService {
       }
 
       try {
-        CatalogDAO.getInstance().replaceAllRolesForStaff(connection, staffDTO);
+        CatalogDAO.getInstance().createAllRolesForStaff(connection, staffDTO);
       } catch (SQLException e) {
         connection.rollback();
         throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible crear el miembro de personal.");
@@ -54,7 +54,7 @@ public class StaffService {
 
       if (staffDTO.getRoles().contains(StaffRole.TUTOR)) {
         try {
-          CatalogDAO.getInstance().replaceAllTutorsForStaff(connection, staffDTO);
+          CatalogDAO.getInstance().createAllTutorsForStaff(connection, staffDTO);
         } catch (SQLException e) {
           connection.rollback();
           throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible crear el miembro de personal.");

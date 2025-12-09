@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import org.controlsfx.control.CheckComboBox?>
-<?import javafx.scene.control.ComboBox?>
+
 <AnchorPane fx:id="container" prefHeight="800.0" prefWidth="800.0" stylesheets="@main.css"
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="daima.gui.controller.RegisterStaffController">
@@ -63,7 +63,7 @@
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Programas Tutorados"/>
-                    <CheckComboBox fx:id="fieldProgramTutor" maxWidth="1.7976931348623157E308" styleClass="input"
+                    <CheckComboBox fx:id="fieldTutoredProgram" maxWidth="1.7976931348623157E308" styleClass="input"
                                    disable="true"/>
                     <Label fx:id="labelTagProgramTutor" text="Label" textFill="RED"/>
                   </children>

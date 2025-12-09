@@ -48,29 +48,27 @@
                     <Label styleClass="label" text="Número de Personal"/>
                     <TextField fx:id="fieldIDWorker"
                                promptText="Número de Personal"
-                               styleClass="input" editable="false"/>
+                               styleClass="input" disable="true"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Rol/Roles"/>
                     <TextField fx:id="fieldFormattedRoles" text="Rol/Roles de Miembro de Personal"
-                               styleClass="input" editable="false"/>
+                               styleClass="input" disable="true"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Contraseña (Opcional)"/>
-                    <PasswordField fx:id="fieldPassword" promptText="Actualice su Contraseña" styleClass="input"
-                                   disable="true"/>
+                    <PasswordField fx:id="fieldPassword" promptText="Actualice su Contraseña" styleClass="input"/>
                     <Label fx:id="labelTagPassword" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
                 <VBox prefWidth="360.0" spacing="8.0">
                   <children>
                     <Label styleClass="label" text="Confirmar Contraseña (Opcional)"/>
-                    <PasswordField fx:id="fieldConfirmPassword" promptText="Confirme su Contraseña" styleClass="input"
-                                   disable="true"/>
+                    <PasswordField fx:id="fieldConfirmPassword" promptText="Confirme su Contraseña" styleClass="input"/>
                     <Label fx:id="labelTagConfirmPassword" text="Label" textFill="RED"/>
                   </children>
                 </VBox>
