@@ -25,7 +25,10 @@ public class TutoredDAO extends DAOShape<TutoredDTO> {
   private static final String GET_ALL_QUERY = "SELECT * FROM CompleteTutoredView ORDER BY created_at DESC";
   private static final String GET_ALL_BY_TUTOR_QUERY = "SELECT * FROM CompleteTutoredView WHERE tutor_id = ? ORDER BY created_at DESC";
   private static final String GET_ALL_BY_PROGRAM_QUERY = "SELECT * FROM CompleteTutoredView WHERE program_id = ? ORDER BY created_at DESC";
-  private static final String GET_ALL_BY_PROGRAM_AND_TUTOR_QUERY = "SELECT * FROM CompleteTutoredView WHERE program_id = ? AND tutor_id = ? ORDER BY created_at DESC";
+  private static final String GET_ALL_BY_PROGRAM_AND_TUTOR_QUERY =
+    "SELECT * FROM CompleteTutoredView WHERE program_id = ? AND tutor_id = ? ORDER BY created_at DESC";
+  private static final String GET_ALL_BY_PROGRAM_AND_TUTOR_WITH_NO_TUTORING_SESSION_QUERY =
+    "SELECT * FROM CompleteTutoredView CT WHERE CT.program_id = ? AND CT.tutor_id = ? AND NOT EXISTS(SELECT 1 FROM TutoringSession TS WHERE TS.tutored_id = CT.tutored_id AND TS.tutor_id = ? AND TS.session_plan_id = ?) ORDER BY CT.created_at DESC";
   private static final String GET_ONE_QUERY = "SELECT * FROM CompleteTutoredView WHERE tutored_id = ?";
   private static final String UPDATE_ONE_QUERY =
     "UPDATE Tutored SET name = ?, last_name = ?, email = ?, enrollment = ?, state = ?, program_id = ?, tutor_id = ? WHERE tutored_id = ?";
@@ -157,6 +160,33 @@ public class TutoredDAO extends DAOShape<TutoredDTO> {
     ) {
       statement.setInt(1, idProgram);
       statement.setInt(2, idTutor);
+
+      try (ResultSet resultSet = statement.executeQuery()) {
+        while (resultSet.next()) {
+          tutoredDTOList.add(createDTOInstanceFromResultSet(resultSet));
+        }
+      }
+
+      return tutoredDTOList;
+    } catch (SQLException e) {
+      throw ExceptionHandler.handleSQLException(LOGGER, e, "No ha sido posible cargar los tutorados del tutor.");
+    }
+  }
+
+  public ArrayList<TutoredDTO> getAllByProgramAndTutorWithNoTutoringSession(
+    int idProgram,
+    int idTutor,
+    int idTutoringSessionPlan) throws UserDisplayableException {
+    ArrayList<TutoredDTO> tutoredDTOList = new ArrayList<>();
+
+    try (
+      Connection connection = DBConnector.getInstance().getConnection();
+      PreparedStatement statement = connection.prepareStatement(GET_ALL_BY_PROGRAM_AND_TUTOR_WITH_NO_TUTORING_SESSION_QUERY)
+    ) {
+      statement.setInt(1, idProgram);
+      statement.setInt(2, idTutor);
+      statement.setInt(3, idTutor);
+      statement.setInt(4, idTutoringSessionPlan);
 
       try (ResultSet resultSet = statement.executeQuery()) {
         while (resultSet.next()) {

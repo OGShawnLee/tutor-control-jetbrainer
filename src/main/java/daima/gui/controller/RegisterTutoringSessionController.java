@@ -15,7 +15,7 @@ import daima.business.dto.StaffDTO;
 import daima.business.dto.TutoredDTO;
 import daima.business.dto.TutoringSessionDTO;
 import daima.business.dto.TutoringSessionPlanDTO;
-import daima.business.enumeration.TutoringSessionPlanState;
+import daima.business.service.TutoringSessionService;
 import daima.business.validator.ValidationResult;
 import daima.business.validator.Validator;
 import daima.common.UserDisplayableException;
@@ -24,7 +24,6 @@ import daima.gui.modal.ModalFacade;
 import daima.gui.modal.ModalFacadeConfiguration;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class RegisterTutoringSessionController extends Controller {
   @FXML
@@ -52,14 +51,18 @@ public class RegisterTutoringSessionController extends Controller {
 
   private void setContext(TutoringSessionDTO editTutoringSessionDTO) {
     this.editTutoringSessionDTO = editTutoringSessionDTO;
+
     configureTitle();
-    fetchAndConfigureEditFormData();
+    fetchAndConfigureFieldProgram();
+    configureFetchAndConfigureOnProgramSelection();
+
+    if (editTutoringSessionDTO != null) {
+      fetchAndConfigureEditFormData();
+    }
   }
 
   public void initialize() {
     cleanErrorLabels();
-    fetchAndConfigureFieldProgram();
-    configureFetchAndConfigureOnProgramSelection();
   }
 
   private void fetchAndConfigureFieldProgram() {
@@ -73,67 +76,54 @@ public class RegisterTutoringSessionController extends Controller {
       // Set that Program and disable the field as there is only one.
       fieldProgram.setValue(programDTOList.get(0));
       fieldProgram.setDisable(true);
-      fetchAndConfigureFieldTutored(programDTOList.get(0));
       fetchAndConfigureCurrentPlanData(programDTOList.get(0));
+      fetchAndConfigureFieldTutored(programDTOList.get(0));
     }
   }
 
   private void fetchAndConfigureCurrentPlanData(ProgramDTO programTutoredDTO) {
     try {
-      Optional<TutoringSessionPlanDTO> previousPlanDTO = TutoringSessionPlanDAO.getInstance().findLatestByProgram(
-        programTutoredDTO.getID()
-      );
+      TutoringSessionPlanDTO previousPlanDTO = TutoringSessionService
+        .getInstance()
+        .getLatestSessionPlanForRegistration(programTutoredDTO.getID());
 
-      if (previousPlanDTO.isPresent()) {
-        if (previousPlanDTO.get().getState() == TutoringSessionPlanState.COMPLETED) {
-          AlertFacade.showErrorAndWait(
-            "No es posible agendar un horario debido a que aún no hay ninguna planeación de tutoría vigente para el programa educativo seleccionado."
-          );
-        } else {
-          currentPlanDTO = previousPlanDTO.get();
-          fieldTutoringSessionKind.setText(previousPlanDTO.get().getKind().toString());
-          fieldAppointmentDate.setText(previousPlanDTO.get().getFormattedAppointmentDate());
-        }
-      } else {
-        AlertFacade.showErrorAndWait(
-          "No es posible agendar horario de tutoría debido a que aún no hay ninguna planeación de tutoría para el programa educativo seleccionado."
-        );
-      }
-
+      currentPlanDTO = previousPlanDTO;
+      fieldTutoringSessionKind.setText(previousPlanDTO.getKind().toString());
+      fieldAppointmentDate.setText(previousPlanDTO.getFormattedAppointmentDate());
     } catch (UserDisplayableException e) {
-      AlertFacade.showErrorAndWait(
-        "No ha sido posible cargar la información de la planeación de tutoría."
-      );
+      AlertFacade.showErrorAndWait(e);
     }
   }
 
   private void fetchAndConfigureFieldTutored(ProgramDTO programTutoredDTO) {
+    if (editTutoringSessionDTO != null) {
+      return;
+    }
+
+    if (currentPlanDTO == null) {
+      throw new IllegalStateException(
+        "currentPlanDTO debe ser determinado antes de encontrar los Tutored para agendar un Tutoring Session."
+      );
+    }
+
     try {
-      StaffDTO currentTutorDTO = AuthClient.getInstance().getCurrentStaff();
-      ArrayList<TutoredDTO> tutoredDTOList = TutoredDAO.getInstance().getAllByProgramAndTutor(
-        programTutoredDTO.getID(),
-        currentTutorDTO.getID()
+      fieldTutored.getItems().setAll(
+        TutoringSessionService.getInstance().getTutoredListForRegistration(
+          AuthClient.getInstance().getCurrentStaff().getID(),
+          programTutoredDTO.getID(),
+          currentPlanDTO.getID()
+        )
       );
-
-      if (tutoredDTOList.isEmpty()) {
-        AlertFacade.showErrorAndWait(
-          "No es posible agendar horario porque no hay ningún tutorado registrado en el sistema aún para este programa educativo."
-        );
-      }
-
-      fieldTutored.getItems().setAll(tutoredDTOList);
     } catch (UserDisplayableException e) {
-      AlertFacade.showErrorAndWait(
-        "No ha sido posible recuperar información debido a un error en la base de datos, intente de nuevo más tarde"
-      );
+      AlertFacade.showErrorAndWait(e);
     }
   }
 
   private void configureFetchAndConfigureOnProgramSelection() {
     fieldProgram.setOnAction(e -> {
       if (fieldProgram.getValue() != null) {
-        fetchAndConfigureFieldTutored(fieldProgram.getValue());
         fetchAndConfigureCurrentPlanData(fieldProgram.getValue());
+        fetchAndConfigureFieldTutored(fieldProgram.getValue());
       }
     });
   }
@@ -147,8 +137,6 @@ public class RegisterTutoringSessionController extends Controller {
   }
 
   private void fetchAndConfigureEditFormData() {
-    if (editTutoringSessionDTO == null) return;
-
     try {
       currentPlanDTO = TutoringSessionPlanDAO.getInstance().getOne(editTutoringSessionDTO.getIDPlan());
 
@@ -248,13 +236,15 @@ public class RegisterTutoringSessionController extends Controller {
 
   public static void displayRegisterTutoringSessionModal(Runnable onClose) {
     try {
-      ModalFacade.displayModal(
+      RegisterTutoringSessionController controller = ModalFacade.displayModal(
         new ModalFacadeConfiguration(
-          "Reagendar Horario de Tutoría",
+          "Agendar Horario de Tutoría",
           "GUIRegisterTutoringSessionModal",
           onClose
         )
       );
+
+      controller.setContext(null);
     } catch (UserDisplayableException e) {
       AlertFacade.showErrorAndWait(e);
     }
@@ -262,6 +252,8 @@ public class RegisterTutoringSessionController extends Controller {
 
   public static void displayUpdateTutoringSessionModal(Runnable onClose, TutoringSessionDTO sessionDTO) {
     try {
+      TutoringSessionService.getInstance().handleCanUpdateTutoringSessionVerification(sessionDTO);
+
       RegisterTutoringSessionController controller = ModalFacade.displayModal(
         new ModalFacadeConfiguration(
           "Reagendar Horario de Tutoría",
