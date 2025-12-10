@@ -99,6 +99,26 @@ CREATE TABLE Tutors
     FOREIGN KEY (program_id) REFERENCES Program (program_id)
 );
 
+DROP TRIGGER IF EXISTS set_tutored_tutor_id_to_null_on_role_tutor_delete;
+CREATE TRIGGER set_tutored_tutor_id_to_null_on_role_tutor_delete
+    BEFORE DELETE
+    ON Role
+    FOR EACH ROW
+BEGIN
+    IF OLD.role = 'TUTOR' THEN
+        DELETE FROM Tutors WHERE staff_id = OLD.staff_id;
+    END IF;
+END;
+
+DROP TRIGGER IF EXISTS set_tutored_tutor_id_to_null_on_tutors_delete;
+CREATE TRIGGER set_tutored_tutor_id_to_null_on_tutors_delete
+    BEFORE DELETE
+    ON Tutors
+    FOR EACH ROW
+BEGIN
+    UPDATE Tutored SET tutor_id = NULL WHERE tutor_id = OLD.staff_id;
+END;
+
 DROP VIEW IF EXISTS StaffRoleList;
 CREATE VIEW StaffRoleList AS
 SELECT S.staff_id,
@@ -330,226 +350,3 @@ BEGIN
                  END DESC
     LIMIT 1;
 END;
-
-INSERT INTO Program (acronym, name)
-VALUES ('LIS', 'Lic. en Ingeniería de Software');
-INSERT INTO Program (acronym, name)
-VALUES ('LISTI', 'Lic. en Ingeniería de Sistemas y Tecnologías de la Información');
-INSERT INTO Program (acronym, name)
-VALUES ('LCD', 'Lic. en Ingeniería de Ciencia de Datos');
-INSERT INTO Program (acronym, name)
-VALUES ('LICIC', 'Lic. en Ingeniería de Ciberseguridad e Infraestructura de Cómputo');
-
-INSERT INTO Staff (worker_id, email, name, last_name, password)
-VALUES (1, 'Lee@email.com', 'Shawn', 'Lee', 'not-a-real-password'),
-       (2, 'Ocharan@email.com', 'Octavio', 'Ocharan', 'not-a-real-password'),
-       (3, 'Polo@email.com', 'Ana Luz', 'Polo Estrella', 'not-a-real-password'),
-       (4, 'Zarate@email.com', 'William', 'Zarate', 'not-a-real-password'),
-       (5, 'Dolores@email.com', 'Maria', 'Dolores', 'not-a-real-password'),
-       (6, 'Perez@email.com', 'Juan', 'Pérez López', 'not-a-real-password'),
-       (7, 'Castro@email.com', 'Sofía', 'Castro Mena', 'not-a-real-password'),
-       (8, 'Soto@email.com', 'Miguel', 'Soto Bravo', 'not-a-real-password'),
-       (9, 'Rios@email.com', 'Elena', 'Ríos Cano', 'not-a-real-password'),
-       (10, 'Ruiz@email.com', 'Andrés', 'Ruiz Paz', 'not-a-real-password')
-;
-
-INSERT INTO Role (role, staff_id)
-VALUES ('ADMIN', 1),       -- Shawn Lee (Admin Global)
-       ('ADMIN', 2),       -- Octavio Ocharan (Admin Secundario)
-       ('COORDINATOR', 2), -- Octavio Ocharan (Coo P1)
-       ('TUTOR', 2),       -- Octavio Ocharan (también tutor)
-       ('TUTOR', 3),       -- Ana Luz Polo
-       ('COORDINATOR', 4), -- William Zarate (Coo P2)
-       ('TUTOR', 4),       -- William Zarate (también tutor)
-       ('TUTOR', 5),       -- Maria Dolores
-       ('COORDINATOR', 6), -- Juan Pérez (Coo P3)
-       ('TUTOR', 6),       -- Juan Pérez (también tutor)
-       ('COORDINATOR', 7), -- Sofía Castro (Coo P4)
-       ('SUPERVISOR', 8),  -- Miguel Soto
-       ('TUTOR', 9),       -- Elena Ríos
-       ('TUTOR', 10) -- Andrés Ruiz
-;
-
-INSERT INTO Coordinates
-VALUES (2, 1), -- Octavio Ocharan coordina P1 (LIS)
-       (4, 2), -- William Zarate coordina P2 (LISTI)
-       (6, 3), -- Juan Pérez coordina P3 (LCD)
-       (7, 4) -- Sofía Castro coordina P4 (LICIC)
-;
-
-INSERT INTO Tutors (program_id, staff_id)
-VALUES (1, 2),  -- Octavio Ocharan es tutor de LIS   P1
-       (1, 3),  -- Ana Luz Polo es tutor de LIS      P1
-       (1, 4),  -- William Zarate es tutor de LIS    P1
-       (2, 4),  -- William Zarate es tutor de LISTI  P2
-       (1, 5),  -- Maria Dolores es tutor de LIS     P1
-       (2, 5),  -- Maria Dolores es tutor de LISTI   P2
-       (3, 5),  -- Maria Dolores es tutor de LCD     P3
-       (3, 6),  -- Juan Pérez es tutor de LCD        P3
-       (4, 6),  -- Juan Pérez es tutor de LICIC      P4
-       (2, 9),  -- Elena Ríos es tutora de LISTI     P2
-       (3, 9),  -- Elena Ríos es tutora de LCD       P3
-       (3, 10), -- Andrés Ruiz es tutor de LCD       P3
-       (4, 10); -- Andrés Ruiz es tutor de LICIC     P4
-;
-
-UPDATE Staff
-SET password = '$2a$10$6qGGEFr0Qs11RP7zfuP55u.yhxOX/PjOndPMgUPgQttxNxdTEoa3G';
-
-INSERT INTO Tutored (enrollment, email, name, last_name, program_id, tutor_id)
-VALUES
-    -- PROGRAMA 1: LIS (Tutores: 2, 3, 4, 5)
-    (23014115, 'zS23014115@estudiantes.uv.mx', 'Edgar', 'Vázquez García', 1, 2),    -- Tutor 2
-    (23014116, 'zS23014116@estudiantes.uv.mx', 'Ana', 'López Pérez', 1, 2),         -- Tutor 2
-    (23014117, 'zS23014117@estudiantes.uv.mx', 'Luis', 'Hernández Ruiz', 1, 2),     -- Tutor 2
-    (23014118, 'zS23014118@estudiantes.uv.mx', 'Sofía', 'Martínez Díaz', 1, 3),     -- Tutor 3
-    (23014119, 'zS23014119@estudiantes.uv.mx', 'Javier', 'Gómez Castro', 1, 3),     -- Tutor 3
-    (24014120, 'zS24014120@estudiantes.uv.mx', 'María', 'Reyes Flores', 1, 4),      -- Tutor 4
-    (24014121, 'zS24014121@estudiantes.uv.mx', 'Carlos', 'Jiménez Sosa', 1, 4),     -- Tutor 4
-    (24014122, 'zS24014122@estudiantes.uv.mx', 'Elena', 'Torres Vega', 1, 5),       -- Tutor 5
-    (25014123, 'zS25014123@estudiantes.uv.mx', 'Ricardo', 'Navarro Cruz', 1, NULL), -- Matrícula 25 -> NULL
-    (25014124, 'zS25014124@estudiantes.uv.mx', 'Andrea', 'Paredes Cano', 1, NULL),  -- Matrícula 25 -> NULL
-    -- PROGRAMA 2: LISTI (Tutores: 4, 5, 9)
-    (23014125, 'zS23014125@estudiantes.uv.mx', 'Pedro', 'Mendoza Salas', 2, 4),
-    (23014126, 'zS23014126@estudiantes.uv.mx', 'Laura', 'Díaz Ochoa', 2, 4),
-    (23014127, 'zS23014127@estudiantes.uv.mx', 'Miguel', 'Vargas Polo', 2, 4),
-    (23014128, 'zS23014128@estudiantes.uv.mx', 'Isabel', 'Herrera Gil', 2, 5),
-    (23014129, 'zS23014129@estudiantes.uv.mx', 'Diego', 'Rojas León', 2, 5),
-    (24014130, 'zS24014130@estudiantes.uv.mx', 'Natalia', 'Cáceres Solis', 2, 5),
-    (24014131, 'zS24014131@estudiantes.uv.mx', 'Oscar', 'Quintero Mora', 2, 9),
-    (24014132, 'zS24014132@estudiantes.uv.mx', 'Valeria', 'Guerrero Ríos', 2, 9),
-    (25014133, 'zS25014133@estudiantes.uv.mx', 'Felipe', 'Ortiz Ruiz', 2, NULL),    -- Matrícula 25 -> NULL
-    (25014134, 'zS25014134@estudiantes.uv.mx', 'Gaby', 'Sandoval Pérez', 2, NULL),  -- Matrícula 25 -> NULL
-    -- PROGRAMA 3: LCD (Tutores: 5, 6, 9, 10)
-    (23014135, 'zS23014135@estudiantes.uv.mx', 'Héctor', 'Chávez López', 3, 5),
-    (23014136, 'zS23014136@estudiantes.uv.mx', 'Daniela', 'Acosta Gómez', 3, 5),
-    (23014137, 'zS23014137@estudiantes.uv.mx', 'Raúl', 'Bravo Díaz', 3, 5),
-    (23014138, 'zS23014138@estudiantes.uv.mx', 'Mónica', 'Castañeda Luna', 3, 6),
-    (23014139, 'zS23014139@estudiantes.uv.mx', 'Jorge', 'Fuentes Garza', 3, 6),
-    (24014140, 'zS24014140@estudiantes.uv.mx', 'Paulina', 'Ibarra Soto', 3, 9),
-    (24014141, 'zS24014141@estudiantes.uv.mx', 'Adrián', 'Juárez Ramos', 3, 9),
-    (24014142, 'zS24014142@estudiantes.uv.mx', 'Karla', 'Leal Valdez', 3, 10),
-    (25014143, 'zS25014143@estudiantes.uv.mx', 'Emmanuel', 'Molina Rico', 3, NULL), -- Matrícula 25 -> NULL
-    (25014144, 'zS25014144@estudiantes.uv.mx', 'Fernanda', 'Núñez Ríos', 3, NULL),  -- Matrícula 25 -> NULL
-    -- PROGRAMA 4: LICIC (Tutores: 6, 10)
-    (23014145, 'zS23014145@estudiantes.uv.mx', 'Roberto', 'Ochoa Vega', 4, 6),
-    (23014146, 'zS23014146@estudiantes.uv.mx', 'Cecilia', 'Quiróz Peña', 4, 6),
-    (23014147, 'zS23014147@estudiantes.uv.mx', 'Guillermo', 'Salazar Ríos', 4, 6),
-    (23014148, 'zS23014148@estudiantes.uv.mx', 'Diana', 'Tapia Ruiz', 4, 6),
-    (23014149, 'zS23014149@estudiantes.uv.mx', 'Juan', 'Ulloa Soto', 4, 6),
-    (24014150, 'zS24014150@estudiantes.uv.mx', 'Silvia', 'Velázquez Cruz', 4, 10),
-    (24014151, 'zS24014151@estudiantes.uv.mx', 'Arturo', 'Zavala Blanco', 4, 10),
-    (24014152, 'zS25014152@estudiantes.uv.mx', 'Brenda', 'Alonso Prado', 4, 10),
-    (25014153, 'zS25014153@estudiantes.uv.mx', 'Christian', 'Báez López', 4, NULL), -- Matrícula 25 -> NULL
-    (25014154, 'zS25014154@estudiantes.uv.mx', 'Damaris', 'Cervantes Mora', 4, NULL) -- Matrícula 25 -> NULL
-;
-
-INSERT INTO Period (year, semester)
-VALUES (2024, 'AUG_JAN'),
-       (2024, 'FEB_JUL'),
-       (2025, 'AUG_JAN'),
-       (2025, 'FEB_JUL'),
-       (2026, 'AUG_JAN');
-
-INSERT INTO TutoringSessionPlan (period_year, period_semester, appointment_date, program_id, kind, created_at)
-VALUES
-    -- ------------------------------------------------------------------------------------------------
-    -- PERIODO 1: 2024 - AUG_JAN (Septiembre a Diciembre 2023) - HISTÓRICO
-    -- ------------------------------------------------------------------------------------------------
-    -- LIS (P1)
-    (2024, 'AUG_JAN', '2023-09-13 00:00:00', 1, 'FIRST_TUTORING_SESSION', '2023-09-08 00:00:00'),
-    (2024, 'AUG_JAN', '2023-10-25 00:00:00', 1, 'SECOND_TUTORING_SESSION', '2023-10-20 00:00:00'),
-    (2024, 'AUG_JAN', '2023-12-06 00:00:00', 1, 'THIRD_TUTORING_SESSION', '2023-12-01 00:00:00'),
-    -- LISTI (P2)
-    (2024, 'AUG_JAN', '2023-09-15 00:00:00', 2, 'FIRST_TUTORING_SESSION', '2023-09-10 00:00:00'),
-    (2024, 'AUG_JAN', '2023-10-27 00:00:00', 2, 'SECOND_TUTORING_SESSION', '2023-10-22 00:00:00'),
-    (2024, 'AUG_JAN', '2023-12-08 00:00:00', 2, 'THIRD_TUTORING_SESSION', '2023-12-03 00:00:00'),
-    -- LCD (P3)
-    (2024, 'AUG_JAN', '2023-09-17 00:00:00', 3, 'FIRST_TUTORING_SESSION', '2023-09-12 00:00:00'),
-    (2024, 'AUG_JAN', '2023-10-29 00:00:00', 3, 'SECOND_TUTORING_SESSION', '2023-10-24 00:00:00'),
-    (2024, 'AUG_JAN', '2023-12-10 00:00:00', 3, 'THIRD_TUTORING_SESSION', '2023-12-05 00:00:00'),
-    -- LICIC (P4)
-    (2024, 'AUG_JAN', '2023-09-19 00:00:00', 4, 'FIRST_TUTORING_SESSION', '2023-09-14 00:00:00'),
-    (2024, 'AUG_JAN', '2023-10-31 00:00:00', 4, 'SECOND_TUTORING_SESSION', '2023-10-26 00:00:00'),
-    (2024, 'AUG_JAN', '2023-12-12 00:00:00', 4, 'THIRD_TUTORING_SESSION', '2023-12-07 00:00:00'),
-
-    -- ------------------------------------------------------------------------------------------------
-    -- PERIODO 2: 2024 - FEB_JUL (Febrero a Mayo 2024) - HISTÓRICO
-    -- ------------------------------------------------------------------------------------------------
-    -- LIS (P1)
-    (2024, 'FEB_JUL', '2024-02-15 00:00:00', 1, 'FIRST_TUTORING_SESSION', '2024-02-10 00:00:00'),
-    (2024, 'FEB_JUL', '2024-03-28 00:00:00', 1, 'SECOND_TUTORING_SESSION', '2024-03-23 00:00:00'),
-    (2024, 'FEB_JUL', '2024-05-09 00:00:00', 1, 'THIRD_TUTORING_SESSION', '2024-05-04 00:00:00'),
-    -- LISTI (P2)
-    (2024, 'FEB_JUL', '2024-02-17 00:00:00', 2, 'FIRST_TUTORING_SESSION', '2024-02-12 00:00:00'),
-    (2024, 'FEB_JUL', '2024-03-30 00:00:00', 2, 'SECOND_TUTORING_SESSION', '2024-03-25 00:00:00'),
-    (2024, 'FEB_JUL', '2024-05-11 00:00:00', 2, 'THIRD_TUTORING_SESSION', '2024-05-06 00:00:00'),
-    -- LCD (P3)
-    (2024, 'FEB_JUL', '2024-02-19 00:00:00', 3, 'FIRST_TUTORING_SESSION', '2024-02-14 00:00:00'),
-    (2024, 'FEB_JUL', '2024-04-01 00:00:00', 3, 'SECOND_TUTORING_SESSION', '2024-03-27 00:00:00'),
-    (2024, 'FEB_JUL', '2024-05-13 00:00:00', 3, 'THIRD_TUTORING_SESSION', '2024-05-08 00:00:00'),
-    -- LICIC (P4)
-    (2024, 'FEB_JUL', '2024-02-21 00:00:00', 4, 'FIRST_TUTORING_SESSION', '2024-02-16 00:00:00'),
-    (2024, 'FEB_JUL', '2024-04-03 00:00:00', 4, 'SECOND_TUTORING_SESSION', '2024-03-29 00:00:00'),
-    (2024, 'FEB_JUL', '2024-05-15 00:00:00', 4, 'THIRD_TUTORING_SESSION', '2024-05-10 00:00:00'),
-
-    -- ------------------------------------------------------------------------------------------------
-    -- PERIODO 3: 2025 - AUG_JAN (Septiembre a Diciembre 2024) - HISTÓRICO
-    -- ------------------------------------------------------------------------------------------------
-    -- LIS (P1)
-    (2025, 'AUG_JAN', '2024-09-10 00:00:00', 1, 'FIRST_TUTORING_SESSION', '2024-09-05 00:00:00'),
-    (2025, 'AUG_JAN', '2024-10-22 00:00:00', 1, 'SECOND_TUTORING_SESSION', '2024-10-17 00:00:00'),
-    (2025, 'AUG_JAN', '2024-12-03 00:00:00', 1, 'THIRD_TUTORING_SESSION', '2024-11-28 00:00:00'),
-    -- LISTI (P2)
-    (2025, 'AUG_JAN', '2024-09-12 00:00:00', 2, 'FIRST_TUTORING_SESSION', '2024-09-07 00:00:00'),
-    (2025, 'AUG_JAN', '2024-10-24 00:00:00', 2, 'SECOND_TUTORING_SESSION', '2024-10-19 00:00:00'),
-    (2025, 'AUG_JAN', '2024-12-05 00:00:00', 2, 'THIRD_TUTORING_SESSION', '2024-11-30 00:00:00'),
-    -- LCD (P3)
-    (2025, 'AUG_JAN', '2024-09-14 00:00:00', 3, 'FIRST_TUTORING_SESSION', '2024-09-09 00:00:00'),
-    (2025, 'AUG_JAN', '2024-10-26 00:00:00', 3, 'SECOND_TUTORING_SESSION', '2024-10-21 00:00:00'),
-    (2025, 'AUG_JAN', '2024-12-07 00:00:00', 3, 'THIRD_TUTORING_SESSION', '2024-12-02 00:00:00'),
-    -- LICIC (P4)
-    (2025, 'AUG_JAN', '2024-09-16 00:00:00', 4, 'FIRST_TUTORING_SESSION', '2024-09-11 00:00:00'),
-    (2025, 'AUG_JAN', '2024-10-28 00:00:00', 4, 'SECOND_TUTORING_SESSION', '2024-10-23 00:00:00'),
-    (2025, 'AUG_JAN', '2024-12-09 00:00:00', 4, 'THIRD_TUTORING_SESSION', '2024-12-04 00:00:00'),
-
-    -- ------------------------------------------------------------------------------------------------
-    -- PERIODO 4: 2025 - FEB_JUL (Febrero a Mayo 2025) - HISTÓRICO RECIENTE
-    -- ------------------------------------------------------------------------------------------------
-    -- LIS (P1)
-    (2025, 'FEB_JUL', '2025-02-15 00:00:00', 1, 'FIRST_TUTORING_SESSION', '2025-02-10 00:00:00'),
-    (2025, 'FEB_JUL', '2025-03-28 00:00:00', 1, 'SECOND_TUTORING_SESSION', '2025-03-23 00:00:00'),
-    (2025, 'FEB_JUL', '2025-05-09 00:00:00', 1, 'THIRD_TUTORING_SESSION', '2025-05-04 00:00:00'),
-    -- LISTI (P2)
-    (2025, 'FEB_JUL', '2025-02-17 00:00:00', 2, 'FIRST_TUTORING_SESSION', '2025-02-12 00:00:00'),
-    (2025, 'FEB_JUL', '2025-03-30 00:00:00', 2, 'SECOND_TUTORING_SESSION', '2025-03-25 00:00:00'),
-    (2025, 'FEB_JUL', '2025-05-11 00:00:00', 2, 'THIRD_TUTORING_SESSION', '2025-05-06 00:00:00'),
-    -- LCD (P3)
-    (2025, 'FEB_JUL', '2025-02-19 00:00:00', 3, 'FIRST_TUTORING_SESSION', '2025-02-14 00:00:00'),
-    (2025, 'FEB_JUL', '2025-04-01 00:00:00', 3, 'SECOND_TUTORING_SESSION', '2025-03-27 00:00:00'),
-    (2025, 'FEB_JUL', '2025-05-13 00:00:00', 3, 'THIRD_TUTORING_SESSION', '2025-05-08 00:00:00'),
-    -- LICIC (P4)
-    (2025, 'FEB_JUL', '2025-02-21 00:00:00', 4, 'FIRST_TUTORING_SESSION', '2025-02-16 00:00:00'),
-    (2025, 'FEB_JUL', '2025-04-03 00:00:00', 4, 'SECOND_TUTORING_SESSION', '2025-03-29 00:00:00'),
-    (2025, 'FEB_JUL', '2025-05-15 00:00:00', 4, 'THIRD_TUTORING_SESSION', '2025-05-10 00:00:00'),
-
-    -- ------------------------------------------------------------------------------------------------
-    -- PERIODO 5: 2026 - AUG_JAN (Septiembre a Diciembre 2025) - ACTUAL/AJUSTADO
-    -- (Tercera sesión finalizada el 2025-12-06 o antes)
-    -- ------------------------------------------------------------------------------------------------
-    -- LIS (P1)
-    (2026, 'AUG_JAN', '2025-09-14 00:00:00', 1, 'FIRST_TUTORING_SESSION', '2025-09-09 00:00:00'),
-    (2026, 'AUG_JAN', '2025-10-26 00:00:00', 1, 'SECOND_TUTORING_SESSION', '2025-10-21 00:00:00'),
-    -- (2026, 'AUG_JAN', '2025-12-06 00:00:00', 1, 'THIRD_TUTORING_SESSION', '2025-12-01 00:00:00'),
-    -- LISTI (P2)
-    (2026, 'AUG_JAN', '2025-09-10 00:00:00', 2, 'FIRST_TUTORING_SESSION', '2025-09-05 00:00:00'),
-    (2026, 'AUG_JAN', '2025-10-22 00:00:00', 2, 'SECOND_TUTORING_SESSION', '2025-10-17 00:00:00'),
-    (2026, 'AUG_JAN', '2025-12-03 00:00:00', 2, 'THIRD_TUTORING_SESSION', '2025-11-28 00:00:00'),
-    -- LCD (P3)
-    (2026, 'AUG_JAN', '2025-09-12 00:00:00', 3, 'FIRST_TUTORING_SESSION', '2025-09-07 00:00:00'),
-    (2026, 'AUG_JAN', '2025-10-24 00:00:00', 3, 'SECOND_TUTORING_SESSION', '2025-10-19 00:00:00'),
-    (2026, 'AUG_JAN', '2025-12-05 00:00:00', 3, 'THIRD_TUTORING_SESSION', '2025-11-30 00:00:00'),
-    -- LICIC (P4)
-    (2026, 'AUG_JAN', '2025-09-14 00:00:00', 4, 'FIRST_TUTORING_SESSION', '2025-09-09 00:00:00'),
-    (2026, 'AUG_JAN', '2025-10-26 00:00:00', 4, 'SECOND_TUTORING_SESSION', '2025-10-21 00:00:00'),
-    (2026, 'AUG_JAN', '2025-12-06 00:00:00', 4, 'THIRD_TUTORING_SESSION', '2025-12-01 00:00:00');
