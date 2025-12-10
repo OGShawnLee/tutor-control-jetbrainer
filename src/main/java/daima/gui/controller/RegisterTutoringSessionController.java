@@ -57,7 +57,7 @@ public class RegisterTutoringSessionController extends Controller {
     configureFetchAndConfigureOnProgramSelection();
 
     if (editTutoringSessionDTO != null) {
-      fetchAndConfigureEditFormData();
+      fetchAndConfigureEditFormData(editTutoringSessionDTO);
     }
   }
 
@@ -76,8 +76,30 @@ public class RegisterTutoringSessionController extends Controller {
       // Set that Program and disable the field as there is only one.
       fieldProgram.setValue(programDTOList.get(0));
       fieldProgram.setDisable(true);
+
       fetchAndConfigureCurrentPlanData(programDTOList.get(0));
-      fetchAndConfigureFieldTutored(programDTOList.get(0));
+      if (currentPlanDTO != null) {
+        fetchAndConfigureFieldTutored(programDTOList.get(0), currentPlanDTO);
+      }
+    }
+  }
+
+  private void configurePlanDependantFieldsState(TutoringSessionPlanDTO planDTO) {
+    if (planDTO == null) {
+      fieldTutored.setDisable(true);
+      fieldTutored.setValue(null);
+      fieldTutored.getItems().clear();
+      fieldAppointmentDate.setText(null);
+      fieldAppointmentDate.setDisable(true);
+      fieldTutoringSessionKind.setText(null);
+      fieldTutoringSessionKind.setDisable(true);
+      fieldHour.setText(null);
+      fieldHour.setDisable(true);
+    } else {
+      fieldTutored.setDisable(false);
+      fieldAppointmentDate.setDisable(false);
+      fieldTutoringSessionKind.setDisable(false);
+      fieldHour.setDisable(false);
     }
   }
 
@@ -90,18 +112,20 @@ public class RegisterTutoringSessionController extends Controller {
       currentPlanDTO = previousPlanDTO;
       fieldTutoringSessionKind.setText(previousPlanDTO.getKind().toString());
       fieldAppointmentDate.setText(previousPlanDTO.getFormattedAppointmentDate());
+      configurePlanDependantFieldsState(currentPlanDTO);
     } catch (UserDisplayableException e) {
+      configurePlanDependantFieldsState(null);
       AlertFacade.showErrorAndWait(e);
     }
   }
 
-  private void fetchAndConfigureFieldTutored(ProgramDTO programTutoredDTO) {
+  private void fetchAndConfigureFieldTutored(ProgramDTO programTutoredDTO, TutoringSessionPlanDTO currentPlanDTO) {
     if (editTutoringSessionDTO != null) {
       return;
     }
 
     if (currentPlanDTO == null) {
-      throw new IllegalStateException(
+      throw new IllegalArgumentException(
         "currentPlanDTO debe ser determinado antes de encontrar los Tutored para agendar un Tutoring Session."
       );
     }
@@ -123,7 +147,9 @@ public class RegisterTutoringSessionController extends Controller {
     fieldProgram.setOnAction(e -> {
       if (fieldProgram.getValue() != null) {
         fetchAndConfigureCurrentPlanData(fieldProgram.getValue());
-        fetchAndConfigureFieldTutored(fieldProgram.getValue());
+        if (currentPlanDTO != null) {
+          fetchAndConfigureFieldTutored(fieldProgram.getValue(), currentPlanDTO);
+        }
       }
     });
   }
@@ -136,7 +162,13 @@ public class RegisterTutoringSessionController extends Controller {
     }
   }
 
-  private void fetchAndConfigureEditFormData() {
+  private void fetchAndConfigureEditFormData(TutoringSessionDTO editTutoringSessionDTO) {
+    if (currentPlanDTO == null) {
+      throw new IllegalArgumentException(
+        "editTutoringSessionDTO debe estar definido para poder configurar los campos de edición."
+      );
+    }
+
     try {
       currentPlanDTO = TutoringSessionPlanDAO.getInstance().getOne(editTutoringSessionDTO.getIDPlan());
 
