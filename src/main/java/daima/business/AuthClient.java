@@ -4,6 +4,7 @@ import daima.business.dao.ProgramDAO;
 import daima.business.dto.ProgramDTO;
 import daima.business.dto.StaffDTO;
 import daima.business.enumeration.StaffRole;
+import daima.common.BusinessRuleException;
 import daima.common.UserDisplayableException;
 
 import java.util.ArrayList;
@@ -51,6 +52,12 @@ public class AuthClient {
       } catch (UserDisplayableException e) {
         throw new UserDisplayableException("No ha sido posible obtener los programas educativos asociados al tutor.");
       }
+    }
+
+    if (role == StaffRole.SUPERVISOR) {
+      throw new BusinessRuleException(
+        "No es posible iniciar sesión como supervisor debido a que su funcionalidad no esta contemplada en la versión actual del sistema."
+      );
     }
   }
 

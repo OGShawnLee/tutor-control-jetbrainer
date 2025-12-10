@@ -73,8 +73,9 @@ public abstract class Controller {
         navigateFromThisPageTo("Landing Page", "GUILandingCoordinatorPage");
         break;
       case SUPERVISOR:
-        navigateFromThisPageTo("Landing Page", "GUILandingSupervisorPage");
-        break;
+        throw new IllegalStateException(
+          "No es posible navegar a página de supervisor debido a que su funcionalidad no esta contemplada."
+        );
       case TUTOR:
         navigateFromThisPageTo("Landing Page", "GUILandingTutorPage");
         break;
